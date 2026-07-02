@@ -786,17 +786,30 @@
     /* Supabase uses only its public browser key here. RLS protects all personal data. */
     const SUPABASE_URL = 'https://cglqkjfqwxhckjinuhhl.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_2eZutl2Jh717yGe_K1g9zw_GLFldR-1';
+    const getSupabaseErrorMessage = (payload, status) => {
+      const code = payload?.error_code || payload?.code;
+      if (code === 'phone_provider_disabled') return 'ارسال پیامک هنوز فعال نشده است. لطفاً با پشتیبانی تماس بگیرید.';
+      if (code === 'over_sms_send_rate_limit' || status === 429) return 'تعداد درخواست‌ها بیش از حد مجاز است. کمی بعد دوباره تلاش کنید.';
+      if (code === 'otp_expired') return 'کد تأیید منقضی شده است. لطفاً کد جدید دریافت کنید.';
+      if (code === 'otp_disabled') return 'ارسال کد تأیید در حال حاضر در دسترس نیست.';
+      return payload?.msg || payload?.message || payload?.error_description || payload?.error || 'ارتباط با سرور برقرار نشد.';
+    };
     const supabaseRequest = async (path, options = {}, accessToken = SUPABASE_KEY) => {
-      const response = await fetch(`${SUPABASE_URL}${path}`, {
-        ...options,
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${accessToken}`,
-          ...(options.headers || {})
-        }
-      });
+      let response;
+      try {
+        response = await fetch(`${SUPABASE_URL}${path}`, {
+          ...options,
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${accessToken}`,
+            ...(options.headers || {})
+          }
+        });
+      } catch {
+        throw new Error('ارتباط با سرویس تأیید برقرار نشد. اتصال اینترنت را بررسی و دوباره تلاش کنید.');
+      }
       const payload = response.status === 204 ? null : await response.json().catch(() => null);
-      if (!response.ok) throw new Error(payload?.msg || payload?.message || payload?.error_description || payload?.error || 'ارتباط با سرور برقرار نشد.');
+      if (!response.ok) throw new Error(getSupabaseErrorMessage(payload, response.status));
       return payload;
     };
 
