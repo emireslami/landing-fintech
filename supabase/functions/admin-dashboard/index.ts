@@ -89,7 +89,7 @@ Deno.serve(async request => {
 
   if (request.method === 'PATCH' && action === 'status') {
     const body = await request.json().catch(() => ({}));
-    const allowed = new Set(['pending', 'contacted', 'accepted', 'rejected']);
+    const allowed = new Set(['unreviewed', 'initial_contact', 'awaiting_payment', 'scheduled', 'attended']);
     if (!body.id || !allowed.has(body.status)) return json({ message: 'درخواست نامعتبر است.' }, 400, origin);
     const response = await serviceRequest(`/rest/v1/bootcamp_applications?id=eq.${encodeURIComponent(body.id)}`, {
       method: 'PATCH',

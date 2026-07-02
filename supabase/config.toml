@@ -7,6 +7,9 @@ project_id = "landing-page-single-page-premium-stripe"
 [functions.admin-dashboard]
 verify_jwt = false
 
+[functions.application-status]
+verify_jwt = false
+
 [api]
 enabled = true
 # Port to use for the API URL.

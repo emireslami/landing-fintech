@@ -72,6 +72,7 @@
       --ease: cubic-bezier(.4,0,.2,1);
     }
     * { box-sizing: border-box; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     img, svg { max-width: 100%; }
     html { scroll-behavior: smooth; scroll-padding-top: 100px; }
     body {
@@ -334,6 +335,19 @@
     .success-icon { width: 54px; height: 54px; display: grid; place-items: center; margin-bottom: 18px; border-radius: 50%; background: rgba(16,185,129,.12); color: var(--success); font-size: 1.5rem; }
     .form-success h3 { margin-bottom: 8px; font-size: 1.3rem; }
     .form-success p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .tracking-card { padding: 30px; display: grid; grid-template-columns: .9fr 1.1fr; gap: 34px; align-items: center; border-color: rgba(144,202,249,.26); background: linear-gradient(125deg,rgba(144,202,249,.06),var(--surface) 46%); }
+    .tracking-card h2 { margin-bottom: 10px; }
+    .tracking-card p { margin: 0; color: var(--muted); font-size: .84rem; }
+    .tracking-form { padding: 20px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2); }
+    .tracking-row { display: grid; grid-template-columns: minmax(0,1fr) 150px; gap: 10px; }
+    .tracking-row input { width: 100%; height: 56px; padding: 0 16px 0 65px; border: 1px solid rgba(255,255,255,.23); border-radius: 4px; outline: 0; background: transparent; color: var(--text); font: inherit; transition: border-color .2s, box-shadow .2s; }
+    .tracking-row input:focus { border-color: var(--primary-main); box-shadow: 0 0 0 1px var(--primary-main); }
+    .tracking-row .btn { min-height: 56px; }
+    .tracking-result { margin-top: 14px; padding: 14px; border: 1px solid rgba(144,202,249,.2); border-radius: 9px; background: rgba(144,202,249,.045); }
+    .tracking-result strong { display: block; margin-bottom: 6px; color: var(--primary); }
+    .tracking-result p { font-size: .75rem; }
+    .tracking-progress { height: 5px; margin-top: 12px; border-radius: 4px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .tracking-progress span { height: 100%; display: block; border-radius: inherit; background: linear-gradient(90deg,var(--primary-main),var(--accent)); transition: width .5s var(--ease); }
     .next-steps { margin-top: 18px; display: grid; gap: 8px; text-align: right; }
     .next-step { padding: 9px 11px; display: flex; align-items: center; gap: 9px; border-radius: 8px; background: rgba(255,255,255,.035); color: var(--muted); font-size: .75rem; }
     .next-step span { width: 22px; height: 22px; display: grid; place-items: center; flex: 0 0 22px; border-radius: 50%; background: rgba(144,202,249,.1); color: var(--primary); font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; }
@@ -367,6 +381,7 @@
       .origin-card { grid-template-columns: 1fr; gap: 18px; }
       .admission-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .community-card { grid-template-columns: 1fr; gap: 22px; }
+      .tracking-card { grid-template-columns: 1fr; }
       .future-step:not(:last-child)::after { content: "↓"; top: auto; right: 50%; bottom: -17px; left: auto; transform: translateX(50%); }
       .refund-policy { grid-template-columns: 1fr; }
       .nav-links { display: none; }
@@ -452,6 +467,9 @@
       .visual { min-height: 220px; }
       .phone-prefix { width: 42px; font-size: .75rem; }
       .phone-wrap input { padding-left: 48px; padding-right: 10px; font-size: .78rem; }
+      .tracking-card { padding: 22px 18px; }
+      .tracking-form { padding: 16px; }
+      .tracking-row { grid-template-columns: 1fr; }
       .corporate-copy { align-items: flex-start; }
       .corporate-card { padding: 16px; }
       .corporate-card .btn { min-height: 44px; padding-inline: 12px; font-size: .72rem; white-space: nowrap; }
@@ -696,7 +714,21 @@
     </section>
 
     <section class="section" aria-labelledby="admission-title">
-      <div class="container"><div class="section-head reveal"><p class="eyebrow">فرآیند پذیرش</p><h2 id="admission-title">از درخواست تا شروع بوت‌کمپ</h2><p>برای حفظ کیفیت Cohort، پذیرش طی یک فرآیند کوتاه و شفاف انجام می‌شود.</p></div><div class="admission-grid stagger"><article class="card admission-step"><span>۱</span><h3>ثبت درخواست</h3></article><article class="card admission-step"><span>۲</span><h3>بررسی رزومه</h3></article><article class="card admission-step"><span>۳</span><h3>تماس کوتاه</h3></article><article class="card admission-step"><span>۴</span><h3>تأیید نهایی</h3></article><article class="card admission-step"><span>۵</span><h3>شروع بوت‌کمپ</h3></article></div></div>
+      <div class="container"><div class="section-head reveal"><p class="eyebrow">فرآیند پذیرش</p><h2 id="admission-title">از درخواست تا شروع بوت‌کمپ</h2><p>برای حفظ کیفیت Cohort، پذیرش طی یک فرآیند کوتاه و شفاف انجام می‌شود.</p></div><div class="admission-grid stagger"><article class="card admission-step"><span>۱</span><h3>ثبت و بررسی درخواست</h3></article><article class="card admission-step"><span>۲</span><h3>تماس اولیه</h3></article><article class="card admission-step"><span>۳</span><h3>تکمیل پرداخت</h3></article><article class="card admission-step"><span>۴</span><h3>ثبت‌نام نهایی</h3></article><article class="card admission-step"><span>۵</span><h3>حضور در بوت‌کمپ</h3></article></div></div>
+    </section>
+
+    <section class="section" id="tracking" aria-labelledby="tracking-title">
+      <div class="container">
+        <article class="card tracking-card reveal">
+          <div><p class="eyebrow">پیگیری آنلاین</p><h2 id="tracking-title">وضعیت درخواست خود را پیگیری کنید</h2><p>شماره موبایلی را که هنگام ثبت درخواست وارد کرده‌اید بنویسید؛ فقط آخرین وضعیت پذیرش نمایش داده می‌شود.</p></div>
+          <form class="tracking-form" id="trackingForm" novalidate>
+            <label class="sr-only" for="trackingPhone">شماره موبایل</label>
+            <div class="tracking-row"><div class="phone-wrap"><span class="phone-prefix" aria-hidden="true">+98</span><input id="trackingPhone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="9123456789" minlength="10" maxlength="10" pattern="9[0-9]{9}" aria-label="شماره موبایل بدون صفر ابتدایی" required></div><button class="btn btn-primary" id="trackingButton" type="submit">پیگیری وضعیت</button></div>
+            <p class="field-error" id="trackingError" role="alert" aria-live="polite"></p>
+            <div class="tracking-result" id="trackingResult" hidden aria-live="polite"><strong id="trackingStatus"></strong><p id="trackingDescription"></p><div class="tracking-progress" aria-hidden="true"><span id="trackingProgress"></span></div></div>
+          </form>
+        </article>
+      </div>
     </section>
 
     <section class="section" id="apply" aria-labelledby="apply-title">
@@ -851,6 +883,59 @@
         event.preventDefault();
         phoneInput.setCustomValidity('شماره موبایل باید با رقم ۹ شروع شود.');
         phoneInput.reportValidity();
+      }
+    });
+
+    const trackingForm = document.querySelector('#trackingForm');
+    const trackingPhone = document.querySelector('#trackingPhone');
+    const trackingButton = document.querySelector('#trackingButton');
+    const trackingError = document.querySelector('#trackingError');
+    const trackingResult = document.querySelector('#trackingResult');
+    const trackingSteps = {
+      unreviewed: ['در انتظار بررسی', 'درخواست شما ثبت شده و در صف بررسی اولیه قرار دارد.', 20],
+      initial_contact: ['تماس اولیه انجام شد', 'اطلاعات اولیه بررسی شده و گفت‌وگوی پذیرش انجام شده است.', 40],
+      awaiting_payment: ['در انتظار تکمیل پرداخت', 'درخواست تأیید شده و برای نهایی‌شدن ثبت‌نام، پرداخت باقی مانده است.', 60],
+      scheduled: ['ثبت‌نام نهایی؛ در انتظار شروع', 'ثبت‌نام شما کامل است و اطلاعات شروع بوت‌کمپ برایتان ارسال خواهد شد.', 80],
+      attended: ['حضور در بوت‌کمپ ثبت شد', 'فرآیند پذیرش تکمیل شده و حضور شما در بوت‌کمپ ثبت شده است.', 100]
+    };
+
+    trackingPhone.addEventListener('input', () => {
+      trackingPhone.value = toEnglishDigits(trackingPhone.value).replace(/[^0-9]/g, '').slice(0, 10);
+      const valid = /^9[0-9]{9}$/.test(trackingPhone.value);
+      trackingPhone.setCustomValidity(valid ? '' : 'شماره موبایل را به‌صورت ۱۰ رقم و بدون صفر ابتدایی وارد کنید.');
+      trackingResult.hidden = true;
+      trackingError.textContent = '';
+    });
+
+    trackingForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!trackingForm.checkValidity()) { trackingForm.reportValidity(); return; }
+      trackingButton.disabled = true;
+      trackingButton.textContent = 'در حال پیگیری…';
+      trackingError.textContent = '';
+      trackingResult.hidden = true;
+      try {
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/application-status`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: `+98${trackingPhone.value}` })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.message || 'پیگیری وضعیت در حال حاضر ممکن نیست.');
+        if (!result.found || !trackingSteps[result.status]) {
+          trackingError.textContent = 'درخواستی با این شماره موبایل پیدا نشد.';
+          return;
+        }
+        const [title, description, progress] = trackingSteps[result.status];
+        document.querySelector('#trackingStatus').textContent = title;
+        document.querySelector('#trackingDescription').textContent = description;
+        document.querySelector('#trackingProgress').style.width = `${progress}%`;
+        trackingResult.hidden = false;
+      } catch (error) {
+        trackingError.textContent = error.message;
+      } finally {
+        trackingButton.disabled = false;
+        trackingButton.textContent = 'پیگیری وضعیت';
       }
     });
 
