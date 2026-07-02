@@ -309,12 +309,6 @@
     .phone-wrap { position: relative; direction: ltr; }
     .phone-wrap input { direction: ltr; padding-left: 65px; text-align: left; font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-weight: 700; letter-spacing: .04em; }
     .phone-prefix { position: absolute; z-index: 1; top: 1px; bottom: 1px; left: 1px; width: 54px; display: grid; place-items: center; border-right: 1px solid var(--border); border-radius: 4px 0 0 4px; background: rgba(255,255,255,.04); color: var(--primary); font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: .88rem; font-weight: 700; pointer-events: none; }
-    #otpPhonePreview { font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-weight: 700; }
-    .otp-wrap { display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 10px; direction: rtl; }
-    .otp-wrap input { min-width: 0; direction: ltr; padding: 0 16px; text-align: center; letter-spacing: .32em; font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: 1.05rem; font-weight: 700; }
-    .otp-send { min-width: 0; height: 56px; padding: 0 16px; border: 0; border-radius: 8px; background: var(--primary-main); color: #07131d; box-shadow: var(--elevation-1); cursor: pointer; font-size: .72rem; font-weight: 700; white-space: nowrap; transition: background .2s, box-shadow .2s; }
-    .otp-send:hover { background: var(--primary); box-shadow: var(--elevation-4); }
-    .otp-send:disabled { cursor: default; color: #71717a; background: rgba(255,255,255,.04); }
     .upload-input { position: absolute; width: 1px !important; height: 1px !important; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
     .upload-box { min-height: 78px; padding: 13px 16px; display: flex; align-items: center; gap: 14px; border: 1px dashed rgba(255,255,255,.23); border-radius: 8px; background: transparent; cursor: pointer; transition: border-color .2s, background .2s; }
     .upload-box:hover, .upload-input:focus-visible + .upload-box { border-color: rgba(56,189,248,.42); background: rgba(56,189,248,.035); }
@@ -426,7 +420,6 @@
       .apply-form { padding: 18px; }
       .form-submit-long { display: none; }
       .form-submit-short { display: inline; }
-      .otp-wrap { grid-template-columns: 142px minmax(0,1fr); }
       .upload-box { min-height: 78px; }
       .footer-bottom { align-items: flex-start; flex-direction: column; gap: 8px; }
       body { padding-bottom: 72px; }
@@ -451,9 +444,6 @@
       .visual { min-height: 220px; }
       .phone-prefix { width: 42px; font-size: .75rem; }
       .phone-wrap input { padding-left: 48px; padding-right: 10px; font-size: .78rem; }
-      .otp-wrap { grid-template-columns: 1fr; }
-      .otp-send { width: 100%; padding-inline: 8px; font-size: .65rem; }
-      .otp-wrap input { grid-row: 2; }
       .corporate-copy { align-items: flex-start; }
       .corporate-card { padding: 16px; }
       .corporate-card .btn { min-height: 44px; padding-inline: 12px; font-size: .72rem; white-space: nowrap; }
@@ -717,7 +707,6 @@
                 <div class="field"><label for="firstName">نام</label><input id="firstName" name="firstName" type="text" autocomplete="given-name" placeholder="مثلاً امیر" minlength="2" required></div>
                 <div class="field"><label for="lastName">نام خانوادگی</label><input id="lastName" name="lastName" type="text" autocomplete="family-name" placeholder="مثلاً اسلامی" minlength="2" required></div>
                 <div class="field full"><label for="phone">شماره موبایل</label><div class="phone-wrap"><span class="phone-prefix" aria-hidden="true">+98</span><input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="9123456789" minlength="10" maxlength="10" pattern="9[0-9]{9}" aria-label="شماره موبایل بدون صفر ابتدایی" aria-describedby="phoneHint" required></div><small id="phoneHint" style="color:#71717a;font-size:.68rem">شماره موبایل باید با ۹ شروع شود.</small></div>
-                <div class="field full"><label for="otp">کد تأیید شماره موبایل</label><div class="otp-wrap"><button class="otp-send" id="sendOtp" type="button">ارسال کد به موبایل</button><input id="otp" name="otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="کد ۶ رقمی" aria-describedby="otpHint" required></div><small id="otpHint" style="color:#71717a;font-size:.68rem">کد تأیید به شماره <bdi id="otpPhonePreview" dir="ltr">+98…</bdi> ارسال می‌شود.</small></div>
                 <div class="field full"><label for="resume">رزومه <span style="color:#71717a">(اختیاری)</span></label><input class="upload-input" id="resume" name="resume" type="file" accept=".pdf,application/pdf"><label class="upload-box" for="resume"><span class="upload-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 15v3a2 2 0 002 2h10a2 2 0 002-2v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="upload-copy"><strong id="resumeName">برای انتخاب فایل کلیک کنید</strong><small>فقط PDF تا حداکثر ۵۰ مگابایت</small></span></label><span class="field-error" id="resumeError" aria-live="polite"></span></div>
               </div>
               <p class="field-error" id="formError" role="alert" aria-live="assertive"></p>
@@ -788,10 +777,7 @@
     const SUPABASE_KEY = 'sb_publishable_2eZutl2Jh717yGe_K1g9zw_GLFldR-1';
     const getSupabaseErrorMessage = (payload, status) => {
       const code = payload?.error_code || payload?.code;
-      if (code === 'phone_provider_disabled') return 'ارسال پیامک هنوز فعال نشده است. لطفاً با پشتیبانی تماس بگیرید.';
       if (code === 'over_sms_send_rate_limit' || status === 429) return 'تعداد درخواست‌ها بیش از حد مجاز است. کمی بعد دوباره تلاش کنید.';
-      if (code === 'otp_expired') return 'کد تأیید منقضی شده است. لطفاً کد جدید دریافت کنید.';
-      if (code === 'otp_disabled') return 'ارسال کد تأیید در حال حاضر در دسترس نیست.';
       return payload?.msg || payload?.message || payload?.error_description || payload?.error || 'ارتباط با سرور برقرار نشد.';
     };
     const supabaseRequest = async (path, options = {}, accessToken = SUPABASE_KEY) => {
@@ -817,15 +803,11 @@
     const firstNameInput = document.querySelector('#firstName');
     const lastNameInput = document.querySelector('#lastName');
     const phoneInput = document.querySelector('#phone');
-    const otpButton = document.querySelector('#sendOtp');
-    const otpInput = document.querySelector('#otp');
-    const otpPhonePreview = document.querySelector('#otpPhonePreview');
     const resumeInput = document.querySelector('#resume');
     const resumeName = document.querySelector('#resumeName');
     const resumeError = document.querySelector('#resumeError');
     const formError = document.querySelector('#formError');
     const submitApplication = document.querySelector('#submitApplication');
-    let otpWasSent = false;
     const toEnglishDigits = value => value
       .replace(/[۰-۹]/g, digit => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
       .replace(/[٠-٩]/g, digit => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)));
@@ -852,7 +834,6 @@
 
     phoneInput.addEventListener('input', () => {
       phoneInput.value = toEnglishDigits(phoneInput.value).replace(/[^0-9]/g, '').slice(0, 10);
-      otpPhonePreview.textContent = `+98${phoneInput.value || '…'}`;
       validatePhone();
     });
 
@@ -863,42 +844,6 @@
         phoneInput.setCustomValidity('شماره موبایل باید با رقم ۹ شروع شود.');
         phoneInput.reportValidity();
       }
-    });
-
-    otpButton.addEventListener('click', async () => {
-      if (!validatePhone()) {
-        phoneInput.reportValidity();
-        return;
-      }
-      formError.textContent = '';
-      otpButton.disabled = true;
-      otpButton.textContent = 'در حال ارسال…';
-      try {
-        await supabaseRequest('/auth/v1/otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: `+98${phoneInput.value}`, create_user: true })
-        });
-        otpWasSent = true;
-      } catch (error) {
-        formError.textContent = error.message;
-        otpButton.disabled = false;
-        otpButton.textContent = 'ارسال کد به موبایل';
-        return;
-      }
-      const resendAt = Date.now() + 59000;
-      otpButton.textContent = `ارسال مجدد کد (${faNum(59)})`;
-      otpInput.focus();
-      const timer = setInterval(() => {
-        const remaining = Math.max(0, Math.ceil((resendAt - Date.now()) / 1000));
-        otpButton.textContent = remaining ? `ارسال مجدد کد (${faNum(remaining)})` : 'ارسال مجدد کد';
-        if (!remaining) { clearInterval(timer); otpButton.disabled = false; }
-      }, 250);
-    });
-
-    otpInput.addEventListener('input', () => {
-      otpInput.value = toEnglishDigits(otpInput.value).replace(/[^0-9]/g, '').slice(0, 6);
-      otpInput.setCustomValidity(/^[0-9]{6}$/.test(otpInput.value) ? '' : 'کد تأیید باید دقیقاً ۶ رقم باشد.');
     });
 
     resumeInput.addEventListener('change', () => {
@@ -922,9 +867,7 @@
       validatePersianName(firstNameInput, 'نام');
       validatePersianName(lastNameInput, 'نام خانوادگی');
       validatePhone();
-      otpInput.setCustomValidity(/^[0-9]{6}$/.test(otpInput.value) ? '' : 'کد تأیید باید دقیقاً ۶ رقم باشد.');
       if (!applyForm.checkValidity()) { applyForm.reportValidity(); return; }
-      if (!otpWasSent) { formError.textContent = 'ابتدا کد تأیید را برای شماره موبایل ارسال کنید.'; return; }
 
       submitApplication.disabled = true;
       submitApplication.setAttribute('aria-busy', 'true');
@@ -932,39 +875,33 @@
       submitApplication.textContent = 'در حال ثبت درخواست…';
       try {
         const phone = `+98${phoneInput.value}`;
-        const auth = await supabaseRequest('/auth/v1/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'sms', phone, token: otpInput.value })
-        });
-        const accessToken = auth.access_token;
-        const userId = auth.user.id;
+        const applicationId = crypto.randomUUID();
         let resumePath = null;
         const resume = resumeInput.files[0];
 
         if (resume) {
-          resumePath = `${userId}/${crypto.randomUUID()}.pdf`;
+          resumePath = `applications/${applicationId}.pdf`;
           await supabaseRequest(`/storage/v1/object/bootcamp-resumes/${resumePath}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/pdf', 'x-upsert': 'false' },
             body: resume
-          }, accessToken);
+          });
         }
 
-        await supabaseRequest('/rest/v1/bootcamp_applications?on_conflict=user_id', {
+        await supabaseRequest('/rest/v1/bootcamp_applications', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Prefer: 'resolution=merge-duplicates,return=minimal'
+            Prefer: 'return=minimal'
           },
           body: JSON.stringify({
-            user_id: userId,
+            id: applicationId,
             first_name: firstNameInput.value.trim(),
             last_name: lastNameInput.value.trim(),
             phone,
             resume_path: resumePath
           })
-        }, accessToken);
+        });
 
         applyForm.hidden = true;
         document.querySelector('#formSuccess').classList.add('show');
