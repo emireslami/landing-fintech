@@ -273,8 +273,10 @@
     .privacy-option::before { content: "✓"; color: var(--success); font-weight: 900; }
     .instructor { padding: 34px; display: grid; grid-template-columns: 170px 1fr; gap: 32px; align-items: center; overflow: hidden; }
     .portrait { position: relative; width: 170px; aspect-ratio: 1; display: block; border: 1px solid rgba(144,202,249,.24); border-radius: 24px; background: var(--surface-2); box-shadow: var(--elevation-4); overflow: hidden; }
-    .portrait img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 50% 36%; filter: saturate(.9) contrast(1.03); transition: transform .45s var(--ease), filter .3s; }
-    .portrait:hover img { transform: scale(1.035); filter: saturate(1) contrast(1.04); }
+    .portrait::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(145deg,rgba(66,165,245,.18),rgba(12,18,32,.08) 52%,rgba(206,147,216,.12)); box-shadow: inset 0 0 42px rgba(9,9,11,.2); transition: opacity .3s; }
+    .portrait img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 50% 36%; filter: saturate(.78) contrast(1.04) brightness(.94); transition: transform .45s var(--ease), filter .3s; }
+    .portrait:hover::after { opacity: .72; }
+    .portrait:hover img { transform: scale(1.035); filter: saturate(.9) contrast(1.04) brightness(.98); }
     .instructor h3 { margin-bottom: 4px; font-size: 2rem; direction: ltr; text-align: right; }
     .role { margin-bottom: 14px; color: var(--accent); direction: ltr; text-align: right; font-size: .9rem; }
     .linkedin-link { width: fit-content; min-height: 34px; margin-bottom: 14px; padding: 5px 11px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid rgba(144,202,249,.3); border-radius: 8px; color: var(--primary); font-size: .72rem; font-weight: 700; transition: background .2s, border-color .2s, transform .2s; }
