@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09090b">
+  <meta name="description" content="بوت‌کمپ مدیریت محصول فین‌تک، پرداخت و بانکداری ایران؛ از درک صنعت تا طراحی محصولات واقعی.">
+  <meta name="keywords" content="مدیریت محصول، فین‌تک، بانکداری، پرداخت، API Banking، دوره آموزشی">
+  <meta name="author" content="Amir Eslami">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:title" content="بوت‌کمپ مدیریت محصول فین‌تک، پرداخت و بانکداری ایران">
+  <meta property="og:description" content="از درک صنعت تا طراحی محصولات واقعی؛ آموزش پروژه‌محور بر پایه تجربه صنعت.">
+  <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'%3E%3Crect width='1200' height='630' fill='%2309090b'/%3E%3Ccircle cx='600' cy='315' r='180' fill='%232563eb' opacity='.25'/%3E%3C/svg%3E">
+  <title>بوت‌کمپ مدیریت محصول فین‌تک، پرداخت و بانکداری ایران</title>
+  <style>
+    /* ===== Local Persian typefaces ===== */
+    @font-face {
+      font-family: "IRANSansWeb";
+      src: url("assets/fonts/IRANSansWeb_Light.ttf") format("truetype");
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "IRANSansWeb";
+      src: url("assets/fonts/IRANSansWeb_Medium.ttf") format("truetype");
+      font-weight: 400 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "IRANSansWeb";
+      src: url("assets/fonts/IRANSansWeb_Bold.ttf") format("truetype");
+      font-weight: 700 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "IRANSansFaNum";
+      src: url("assets/fonts/IRANSansWeb-FaNum-Bold.ttf") format("truetype");
+      font-weight: 700 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ===== MUI-inspired dark design system (implemented in vanilla CSS) ===== */
+    :root {
+      color-scheme: dark;
+      --bg: #121212;
+      --surface: #1e1e1e;
+      --surface-2: #242424;
+      --primary: #90caf9;
+      --primary-main: #42a5f5;
+      --primary-hover: #b3dcfc;
+      --accent: #ce93d8;
+      --success: #66bb6a;
+      --text: rgba(255,255,255,.87);
+      --muted: rgba(255,255,255,.60);
+      --border: rgba(255,255,255,.12);
+      --border-hover: rgba(144,202,249,.55);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 8px 24px rgba(0,0,0,.32);
+      --elevation-1: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px rgba(0,0,0,.14), 0 1px 3px rgba(0,0,0,.12);
+      --elevation-4: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px rgba(0,0,0,.14), 0 1px 10px rgba(0,0,0,.12);
+      --elevation-8: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+      --container: 1180px;
+      --ease: cubic-bezier(.4,0,.2,1);
+    }
+    * { box-sizing: border-box; }
+    img, svg { max-width: 100%; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 12% 6%, rgba(66,165,245,.09), transparent 30%),
+        radial-gradient(circle at 86% 22%, rgba(206,147,216,.055), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      font-family: "IRANSansWeb", IRANSansX, IRANSans, "Segoe UI", Tahoma, sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, a { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    button { color: inherit; }
+    ::selection { background: rgba(56,189,248,.28); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .container { width: min(calc(100% - 40px), var(--container)); margin-inline: auto; }
+    .section { position: relative; padding: 64px 0; }
+    .section-head { max-width: 660px; margin-bottom: 32px; }
+    .eyebrow { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; color: var(--primary); font-size: .75rem; font-weight: 700; letter-spacing: .02em; }
+    .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 24px; font-size: clamp(2.35rem, 5.1vw, 4.55rem); line-height: 1.2; letter-spacing: -.045em; font-weight: 800; }
+    h2 { margin-bottom: 13px; font-size: clamp(1.8rem, 3vw, 2.75rem); line-height: 1.35; letter-spacing: -.04em; }
+    h3 { line-height: 1.45; }
+    .section-head p { color: var(--muted); margin: 0; }
+    .gradient-text { color: #fff; background: linear-gradient(110deg,#fff 20%,var(--primary) 68%,var(--accent)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .grid { display: grid; gap: 16px; }
+    .grid > *, .hero-grid > *, .apply-grid > *, .instructor > *, .privacy-card > * { min-width: 0; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--elevation-1); transition: transform .25s var(--ease), border-color .25s, background .25s, box-shadow .25s; }
+    .card:hover { transform: translateY(-3px); border-color: var(--border-hover); background: #202020; box-shadow: var(--elevation-8); }
+
+    /* ===== Navigation ===== */
+    .nav-shell { position: fixed; z-index: 50; top: 16px; right: 0; left: 0; pointer-events: none; }
+    .scroll-progress { position: fixed; z-index: 80; top: 0; right: 0; width: 0; height: 3px; background: linear-gradient(90deg,var(--primary-main),var(--accent)); box-shadow: 0 0 10px rgba(144,202,249,.35); pointer-events: none; }
+    .nav { height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border: 1px solid var(--border); border-radius: var(--radius); background: rgba(30,30,30,.88); backdrop-filter: blur(16px); box-shadow: var(--elevation-4); pointer-events: auto; transition: height .25s var(--ease), max-width .25s var(--ease), border-radius .25s; }
+    .nav-shell.scrolled .nav { height: 56px; max-width: 980px; border-radius: var(--radius-sm); box-shadow: var(--elevation-8); }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -.02em; }
+    .brand-mark { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: var(--primary-main); box-shadow: var(--elevation-4); }
+    .brand-mark svg { width: 19px; }
+    .nav-links { display: flex; align-items: center; gap: 26px; color: var(--muted); font-size: .87rem; }
+    .nav-links a { transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ===== Buttons ===== */
+    .btn { position: relative; isolation: isolate; overflow: hidden; min-height: 48px; padding: 0 22px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: 8px; cursor: pointer; font-size: .875rem; font-weight: 700; letter-spacing: .01em; transition: background .2s var(--ease), box-shadow .2s var(--ease), border-color .2s; }
+    .btn:hover { box-shadow: var(--elevation-4); }
+    .btn-primary { background: var(--primary-main); color: #07131d; box-shadow: var(--elevation-1); }
+    .btn-primary:hover { background: var(--primary); }
+    .btn-ghost { color: var(--primary); background: transparent; border-color: rgba(144,202,249,.5); }
+    .btn-ghost:hover { background: rgba(144,202,249,.08); border-color: var(--primary); }
+    .btn-small { min-height: 40px; padding: 0 16px; border-radius: 8px; font-size: .8rem; }
+    .ripple { position: absolute; z-index: -1; border-radius: 50%; background: rgba(255,255,255,.35); transform: scale(0); animation: ripple .65s linear; pointer-events: none; }
+    @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+    /* ===== Hero ===== */
+    .hero { min-height: 720px; padding: 145px 0 68px; display: flex; align-items: center; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 48px; }
+    .hero-copy { max-width: 730px; }
+    .hero-copy .lead { max-width: 680px; margin-bottom: 28px; color: var(--muted); font-size: clamp(1rem,1.35vw,1.13rem); line-height: 1.9; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .trust-line { margin-top: 20px; display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: .82rem; }
+    .hero-facts { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .hero-fact { min-height: 32px; padding: 5px 11px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,.025); color: var(--text); font-size: .7rem; }
+    .hero-fact::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+    .cohort-date { margin-top: 12px; color: var(--muted); font-size: .74rem; }
+    .cohort-date strong { color: var(--text); }
+    .hero-review-note { margin: 10px 2px 0; color: var(--muted); font-size: .7rem; }
+    .origin-card { padding: 34px; display: grid; grid-template-columns: 190px 1fr; gap: 32px; align-items: start; border-color: rgba(144,202,249,.24); }
+    .origin-card h2 { margin: 0; font-size: 1.75rem; }
+    .origin-copy p { margin-bottom: 14px; color: var(--muted); }
+    .origin-copy p:last-child { margin-bottom: 0; color: var(--text); font-weight: 600; }
+    .avatars { display: flex; direction: ltr; }
+    .avatar-dot { width: 27px; height: 27px; display: grid; place-items: center; margin-left: -7px; border: 2px solid var(--bg); border-radius: 50%; background: var(--surface-2); color: #dbeafe; font-size: .62rem; }
+    .visual { position: relative; min-height: 430px; display: grid; place-items: center; }
+    .visual::before { content: ""; position: absolute; inset: 15%; background: var(--primary); filter: blur(110px); opacity: .13; }
+    .network { position: relative; width: 100%; max-width: 500px; filter: drop-shadow(0 30px 55px rgba(0,0,0,.35)); }
+    .network .flow { stroke-dasharray: 8 10; animation: flow 12s linear infinite; }
+    .network .node { transform-box: fill-box; transform-origin: center; animation: breathe 4s ease-in-out infinite; }
+    .network .node:nth-of-type(2) { animation-delay: -1s; }
+    @keyframes flow { to { stroke-dashoffset: -180; } }
+    @keyframes breathe { 50% { transform: scale(1.03); } }
+
+    /* ===== Audience & syllabus ===== */
+    #audience { padding-block: 60px; }
+    .audience-grid { grid-template-columns: repeat(5,minmax(0,1fr)); gap: 10px; }
+    .audience-card { min-height: 68px; padding: 12px 14px; display: flex; flex-direction: row; align-items: center; gap: 11px; box-shadow: none; border-radius: 8px; }
+    .audience-card:hover { transform: none; box-shadow: none; background: rgba(144,202,249,.06); }
+    .card-index { min-width: 27px; height: 27px; display: grid; place-items: center; border-radius: 50%; background: rgba(144,202,249,.08); color: var(--primary); font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: .65rem; font-variant-numeric: tabular-nums; }
+    .audience-card h3 { margin: 0; font-size: .8rem; font-weight: 600; direction: rtl; text-align: right; }
+    #syllabus { padding-block: 60px; }
+    .syllabus-grid { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
+    .syllabus-card { min-height: 68px; padding: 13px 42px 13px 16px; display: flex; align-items: center; position: relative; border-radius: 8px; box-shadow: none; }
+    .syllabus-card::before { content: ""; position: absolute; top: 50%; right: 19px; width: 7px; height: 7px; border-radius: 50%; background: var(--primary-main); box-shadow: 0 0 0 4px rgba(144,202,249,.09); transform: translateY(-50%); }
+    .syllabus-card:hover { transform: none; box-shadow: none; background: rgba(144,202,249,.06); }
+    .syllabus-card h3 { margin: 0; font-size: .84rem; font-weight: 600; }
+    .syllabus-card.is-hidden { display: none; }
+    .syllabus-toggle { margin: 16px auto 0; display: flex; }
+
+    /* ===== Timeline ===== */
+    #learn { padding-block: 60px; }
+    .timeline-wrap { max-width: none; margin-inline: auto; }
+    .timeline { position: relative; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }
+    .timeline::before { display: none; }
+    .timeline-item { position: relative; min-height: 64px; display: flex; align-items: center; gap: 11px; padding: 11px 13px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); transition: background .2s, border-color .2s; }
+    .timeline-item:hover { background: rgba(144,202,249,.06); border-color: var(--border-hover); }
+    .timeline-dot { position: relative; z-index: 1; flex: 0 0 28px; width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid rgba(144,202,249,.4); border-radius: 50%; background: rgba(144,202,249,.08); color: var(--primary); font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: .65rem; box-shadow: none; }
+    .timeline-item:last-child .timeline-dot { background: var(--primary-main); color: #07131d; }
+    .timeline-item h3 { margin: 0; font-size: .82rem; font-weight: 600; }
+
+    /* ===== Outcomes & stats ===== */
+    .transformation-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+    .transformation-card { padding: 24px; }
+    .transformation-card.after { border-color: rgba(102,187,106,.3); background: linear-gradient(135deg,rgba(102,187,106,.07),var(--surface)); }
+    .transformation-label { display: inline-flex; margin-bottom: 18px; padding: 4px 9px; border-radius: 12px; background: rgba(255,255,255,.05); color: var(--muted); font-size: .68rem; }
+    .transformation-card.after .transformation-label { background: rgba(102,187,106,.12); color: var(--success); }
+    .transformation-list { margin: 0; padding: 0; display: grid; gap: 12px; list-style: none; }
+    .transformation-list li { display: flex; align-items: flex-start; gap: 9px; color: var(--muted); font-size: .82rem; }
+    .transformation-list li::before { content: "•"; color: var(--primary); font-weight: 900; }
+    .transformation-card.after li { color: var(--text); }
+    .stats { grid-template-columns: repeat(4,1fr); }
+    .stat { padding: 24px; text-align: center; }
+    .stat span { color: var(--muted); font-size: .84rem; }
+    .stat strong { display: block; margin-top: 10px; font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: 1.65rem; line-height: 1.4; }
+    .price-stat { grid-column: 1 / -1; min-height: 118px; padding: 22px 28px; display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: center; text-align: right; border-color: rgba(144,202,249,.35); background: linear-gradient(100deg,rgba(144,202,249,.1),var(--surface) 56%); }
+    .price-stat strong { margin-top: 0; color: var(--primary); font-size: 1.65rem; }
+    .price-label { color: var(--muted); font-size: .75rem; }
+    .price-meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+    .price-meta span { padding: 4px 9px; border-radius: 12px; background: rgba(255,255,255,.045); color: var(--muted); font-size: .68rem; }
+    .refund-policy { margin-top: 14px; padding: 22px 24px; display: block; border-color: rgba(102,187,106,.28); background: linear-gradient(120deg,rgba(102,187,106,.07),var(--surface) 46%); }
+    .refund-policy h3 { margin-bottom: 8px; font-size: 1.08rem; }
+    .refund-policy p { margin-bottom: 12px; color: var(--muted); font-size: .86rem; }
+    .refund-policy p:last-child { margin-bottom: 0; }
+
+    /* ===== Features & instructor ===== */
+    .features-box { padding: 14px; display: grid; grid-template-columns: repeat(2,1fr); gap: 6px; }
+    .check { padding: 14px; display: flex; align-items: center; gap: 12px; border-radius: 8px; color: #e4e4e7; transition: background .25s; }
+    .check:hover { background: rgba(255,255,255,.025); }
+    .checkmark { flex: 0 0 28px; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: rgba(102,187,106,.12); color: var(--success); font-weight: 900; }
+    .corporate-card { margin-top: 12px; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-color: rgba(206,147,216,.25); background: linear-gradient(100deg,rgba(206,147,216,.07),var(--surface) 46%); }
+    .corporate-copy { display: flex; align-items: center; gap: 16px; }
+    .corporate-icon { width: 44px; height: 44px; display: grid; place-items: center; flex: 0 0 44px; border-radius: 50%; background: rgba(206,147,216,.12); color: var(--accent); }
+    .corporate-icon svg { width: 22px; }
+    .corporate-card h3 { margin-bottom: 3px; font-size: 1rem; }
+    .corporate-card p { margin: 0; color: var(--muted); font-size: .82rem; }
+    .boundary-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }
+    .boundary-card { min-height: 130px; padding: 20px; border-radius: 8px; box-shadow: none; }
+    .boundary-mark { width: 30px; height: 30px; display: grid; place-items: center; margin-bottom: 16px; border-radius: 50%; background: rgba(206,147,216,.1); color: var(--accent); font-weight: 800; }
+    .boundary-card h3 { margin-bottom: 7px; font-size: .92rem; }
+    .boundary-card p { margin: 0; color: var(--muted); font-size: .78rem; }
+    .question-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+    .question-card { min-height: 64px; padding: 12px 14px; display: flex; align-items: center; gap: 11px; border-radius: 8px; box-shadow: none; }
+    .question-card span { width: 28px; height: 28px; display: grid; place-items: center; flex: 0 0 28px; border-radius: 50%; background: rgba(144,202,249,.09); color: var(--primary); font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: .65rem; }
+    .question-card h3 { margin: 0; font-size: .82rem; font-weight: 600; }
+    .career-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }
+    .career-card { min-height: 68px; padding: 13px 15px; display: flex; align-items: center; gap: 11px; border-radius: 8px; box-shadow: none; }
+    .career-card::before { content: "←"; color: var(--success); font-weight: 800; }
+    .career-card h3 { margin: 0; font-size: .8rem; font-weight: 600; }
+    .domain-list { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .domain-chip { padding: 6px 10px; border: 1px solid var(--border); border-radius: 14px; color: var(--muted); background: rgba(255,255,255,.02); font-size: .68rem; }
+    .section-cta { margin-top: 20px; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px 18px; border-top: 1px solid var(--border); }
+    .section-cta p { margin: 0; color: var(--muted); font-size: .8rem; }
+    .proof-grid { margin-top: 12px; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
+    .proof-item { min-height: 92px; padding: 16px; border-radius: 8px; box-shadow: none; }
+    .proof-item strong { display: block; margin-bottom: 5px; color: var(--primary); font-size: .9rem; }
+    .proof-item span { color: var(--muted); font-size: .72rem; }
+    .future-path { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }
+    .future-step { position: relative; min-height: 120px; padding: 20px; }
+    .future-step strong { display: block; margin-bottom: 7px; color: var(--primary); font-size: .95rem; }
+    .future-step p { margin: 0; color: var(--muted); font-size: .76rem; }
+    .future-step:not(:last-child)::after { content: "←"; position: absolute; z-index: 2; top: 50%; left: -17px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; background: var(--bg); color: var(--primary); transform: translateY(-50%); }
+    .admission-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 10px; }
+    .admission-step { position: relative; min-height: 104px; padding: 17px; }
+    .admission-step span { width: 28px; height: 28px; display: grid; place-items: center; margin-bottom: 12px; border-radius: 50%; background: rgba(144,202,249,.1); color: var(--primary); font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: .7rem; }
+    .admission-step h3 { margin: 0; font-size: .8rem; }
+    .community-card { padding: 32px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 36px; align-items: center; border-color: rgba(206,147,216,.28); background: linear-gradient(120deg,rgba(206,147,216,.07),var(--surface) 48%); }
+    .community-card h2 { margin-bottom: 10px; }
+    .community-card p { margin: 0; color: var(--muted); font-size: .85rem; }
+    .community-benefits { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+    .community-benefit { padding: 12px; display: flex; align-items: center; gap: 9px; border-radius: 8px; background: rgba(255,255,255,.035); color: var(--text); font-size: .76rem; }
+    .community-benefit::before { content: "✓"; color: var(--success); font-weight: 900; }
+    .instructor-proof { margin: 4px 0 18px; display: flex; align-items: baseline; gap: 8px; color: var(--muted); font-size: .76rem; }
+    .instructor-proof strong { color: var(--primary); font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: 1.35rem; }
+    .privacy-card { position: relative; padding: 38px; display: grid; grid-template-columns: 72px 1fr; gap: 28px; overflow: hidden; border-color: rgba(144,202,249,.3); background: linear-gradient(135deg,rgba(144,202,249,.08),var(--surface) 48%); }
+    .privacy-card::after { content: ""; position: absolute; top: -100px; left: -80px; width: 280px; height: 280px; border-radius: 50%; background: var(--primary-main); opacity: .07; filter: blur(55px); pointer-events: none; }
+    .privacy-icon { width: 72px; height: 72px; display: grid; place-items: center; border-radius: 50%; background: rgba(144,202,249,.12); color: var(--primary); box-shadow: var(--elevation-1); }
+    .privacy-icon svg { width: 34px; }
+    .privacy-content h2 { margin-bottom: 12px; }
+    .privacy-lead { margin-bottom: 16px; color: var(--text); font-size: 1.04rem; font-weight: 600; }
+    .privacy-content p:not(.privacy-lead) { max-width: 900px; margin-bottom: 12px; color: var(--muted); }
+    .privacy-content p:last-of-type { margin-bottom: 0; }
+    .privacy-assurance { margin-top: 16px !important; padding: 12px 14px; border-right: 3px solid var(--success); border-radius: 6px; background: rgba(102,187,106,.06); color: var(--text) !important; font-weight: 700; }
+    .privacy-options { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .privacy-option { min-height: 34px; padding: 5px 12px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid rgba(144,202,249,.24); border-radius: 17px; background: rgba(144,202,249,.06); color: var(--primary); font-size: .72rem; }
+    .privacy-option::before { content: "✓"; color: var(--success); font-weight: 900; }
+    .instructor { padding: 34px; display: grid; grid-template-columns: 170px 1fr; gap: 32px; align-items: center; overflow: hidden; }
+    .portrait { position: relative; width: 170px; aspect-ratio: 1; display: grid; place-items: center; border-radius: 24px; background: linear-gradient(145deg,#172554,#0c4a6e); overflow: hidden; }
+    .portrait::before { content: ""; position: absolute; width: 140px; height: 140px; top: 42px; border-radius: 50%; background: linear-gradient(145deg,#60a5fa,#2563eb); }
+    .portrait svg { position: relative; width: 105px; margin-top: 20px; }
+    .instructor h3 { margin-bottom: 4px; font-size: 2rem; direction: ltr; text-align: right; }
+    .role { margin-bottom: 14px; color: var(--accent); direction: ltr; text-align: right; font-size: .9rem; }
+    .bio { max-width: 760px; margin-bottom: 18px; color: var(--muted); }
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; direction: ltr; justify-content: flex-end; }
+    .badge { min-height: 32px; padding: 5px 12px; display: inline-flex; align-items: center; border: 1px solid var(--border); border-radius: 16px; color: var(--text); background: transparent; font-size: .7rem; }
+
+    /* ===== FAQ & footer ===== */
+    .faq { max-width: 850px; margin-inline: auto; border-top: 1px solid var(--border); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-question { width: 100%; min-height: 68px; padding: 0; display: flex; align-items: center; justify-content: space-between; gap: 20px; border: 0; background: none; text-align: right; cursor: pointer; font-weight: 700; }
+    .faq-plus { width: 32px; height: 32px; display: grid; place-items: center; flex: 0 0 32px; border: 0; border-radius: 50%; color: var(--muted); background: rgba(255,255,255,.05); transition: transform .25s var(--ease), color .2s, background .2s; }
+    .faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s var(--ease); }
+    .faq-answer > div { overflow: hidden; }
+    .faq-answer p { margin: 0; padding: 0 0 20px; color: var(--muted); }
+    .faq-item.open .faq-answer { grid-template-rows: 1fr; }
+    .faq-item.open .faq-plus { transform: rotate(45deg); color: var(--primary); background: rgba(144,202,249,.1); }
+    .final-cta { margin-top: 0; padding: 46px; overflow: hidden; position: relative; }
+    .final-cta::before { content: ""; position: absolute; inset: auto 25% -70% 25%; height: 300px; border-radius: 50%; background: var(--primary); opacity: .18; filter: blur(80px); pointer-events: none; }
+    .apply-grid { position: relative; display: grid; grid-template-columns: .85fr 1.15fr; gap: 40px; align-items: center; }
+    .apply-copy h2 { max-width: 470px; margin-bottom: 15px; }
+    .apply-copy > p { max-width: 450px; margin-bottom: 20px; color: var(--muted); }
+    .contact-note { display: flex; align-items: center; gap: 11px; color: #d4d4d8; font-size: .88rem; }
+    .contact-note span { width: 27px; height: 27px; display: grid; place-items: center; flex: 0 0 27px; border-radius: 50%; background: rgba(16,185,129,.12); color: var(--success); }
+    .course-price { width: fit-content; margin-bottom: 18px; padding: 8px 12px; display: flex; align-items: baseline; gap: 7px; border: 1px solid rgba(144,202,249,.25); border-radius: 8px; background: rgba(144,202,249,.07); color: var(--muted); font-size: .78rem; }
+    .course-price strong { color: var(--primary); font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: 1rem; }
+    .apply-form { padding: 24px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2); box-shadow: var(--elevation-4); text-align: right; }
+    .form-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+    .field { min-width: 0; display: grid; gap: 8px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { color: #d4d4d8; font-size: .8rem; font-weight: 600; }
+    .field input { width: 100%; height: 56px; padding: 0 16px; border: 1px solid rgba(255,255,255,.23); border-radius: 4px; outline: 0; background: transparent; color: var(--text); font: inherit; font-size: .9rem; transition: border-color .2s, box-shadow .2s; }
+    .field input::placeholder { color: #5f5f68; }
+    .field input:hover { border-color: rgba(255,255,255,.7); }
+    .field input:focus { border-color: var(--primary-main); box-shadow: 0 0 0 1px var(--primary-main); }
+    .phone-wrap { position: relative; direction: ltr; }
+    .phone-wrap input { direction: ltr; padding-left: 65px; text-align: left; font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-weight: 700; letter-spacing: .04em; }
+    .phone-prefix { position: absolute; z-index: 1; top: 1px; bottom: 1px; left: 1px; width: 54px; display: grid; place-items: center; border-right: 1px solid var(--border); border-radius: 4px 0 0 4px; background: rgba(255,255,255,.04); color: var(--primary); font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: .88rem; font-weight: 700; pointer-events: none; }
+    #otpPhonePreview { font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-weight: 700; }
+    .otp-wrap { display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 10px; direction: rtl; }
+    .otp-wrap input { min-width: 0; direction: ltr; padding: 0 16px; text-align: center; letter-spacing: .32em; font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; font-size: 1.05rem; font-weight: 700; }
+    .otp-send { min-width: 0; height: 56px; padding: 0 16px; border: 0; border-radius: 8px; background: var(--primary-main); color: #07131d; box-shadow: var(--elevation-1); cursor: pointer; font-size: .72rem; font-weight: 700; white-space: nowrap; transition: background .2s, box-shadow .2s; }
+    .otp-send:hover { background: var(--primary); box-shadow: var(--elevation-4); }
+    .otp-send:disabled { cursor: default; color: #71717a; background: rgba(255,255,255,.04); }
+    .upload-input { position: absolute; width: 1px !important; height: 1px !important; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+    .upload-box { min-height: 78px; padding: 13px 16px; display: flex; align-items: center; gap: 14px; border: 1px dashed rgba(255,255,255,.23); border-radius: 8px; background: transparent; cursor: pointer; transition: border-color .2s, background .2s; }
+    .upload-box:hover, .upload-input:focus-visible + .upload-box { border-color: rgba(56,189,248,.42); background: rgba(56,189,248,.035); }
+    .upload-icon { width: 40px; height: 40px; display: grid; place-items: center; flex: 0 0 40px; border-radius: 50%; background: rgba(144,202,249,.12); color: var(--primary); }
+    .upload-icon svg { width: 19px; }
+    .upload-copy { min-width: 0; display: grid; gap: 2px; }
+    .upload-copy strong { overflow: hidden; color: #e4e4e7; font-size: .8rem; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+    .upload-copy small { color: #71717a; font-size: .67rem; }
+    .field-error { min-height: 16px; margin: -2px 2px 0; color: #fb7185; font-size: .68rem; }
+    .form-submit { width: 100%; margin-top: 14px; }
+    .form-submit-short { display: none; }
+    .form-privacy { margin: 11px 2px 0; color: #71717a; font-size: .7rem; text-align: center; }
+    .form-success { display: none; min-height: 338px; padding: 35px; place-items: center; align-content: center; border: 1px solid rgba(16,185,129,.22); border-radius: var(--radius); background: rgba(16,185,129,.045); text-align: center; }
+    .form-success.show { display: grid; }
+    .success-icon { width: 54px; height: 54px; display: grid; place-items: center; margin-bottom: 18px; border-radius: 50%; background: rgba(16,185,129,.12); color: var(--success); font-size: 1.5rem; }
+    .form-success h3 { margin-bottom: 8px; font-size: 1.3rem; }
+    .form-success p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .next-steps { margin-top: 18px; display: grid; gap: 8px; text-align: right; }
+    .next-step { padding: 9px 11px; display: flex; align-items: center; gap: 9px; border-radius: 8px; background: rgba(255,255,255,.035); color: var(--muted); font-size: .75rem; }
+    .next-step span { width: 22px; height: 22px; display: grid; place-items: center; flex: 0 0 22px; border-radius: 50%; background: rgba(144,202,249,.1); color: var(--primary); font-family: "IRANSansFaNum", "IRANSansWeb", sans-serif; }
+    .sticky-mobile-cta { display: none; }
+    .footer-bottom { padding: 24px 0 30px; display: flex; justify-content: space-between; align-items: center; color: #71717a; font-size: .78rem; }
+
+    /* ===== Motion ===== */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s var(--ease), transform .75s var(--ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .stagger > * { opacity: 0; transform: translateY(18px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
+    .stagger.visible > * { opacity: 1; transform: none; }
+    .stagger.visible > *:nth-child(2) { transition-delay: .06s; }
+    .stagger.visible > *:nth-child(3) { transition-delay: .12s; }
+    .stagger.visible > *:nth-child(4) { transition-delay: .18s; }
+    .stagger.visible > *:nth-child(5) { transition-delay: .24s; }
+    .stagger.visible > *:nth-child(6) { transition-delay: .30s; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 960px) {
+      .hero { min-height: auto; padding: 130px 0 56px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+      .hero-copy { max-width: 800px; }
+      .visual { min-height: 350px; }
+      .audience-grid { grid-template-columns: repeat(3,1fr); }
+      .syllabus-grid { grid-template-columns: repeat(3,1fr); }
+      .timeline { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .stats { grid-template-columns: repeat(2,1fr); }
+      .boundary-grid, .career-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .proof-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .future-path { grid-template-columns: 1fr; }
+      .origin-card { grid-template-columns: 1fr; gap: 18px; }
+      .admission-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .community-card { grid-template-columns: 1fr; gap: 22px; }
+      .future-step:not(:last-child)::after { content: "↓"; top: auto; right: 50%; bottom: -17px; left: auto; transform: translateX(50%); }
+      .refund-policy { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 820px) {
+      .final-cta { padding: 38px 30px; }
+      .apply-grid { grid-template-columns: 1fr; gap: 28px; }
+      .apply-copy h2, .apply-copy > p { max-width: none; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .form-success { min-height: 300px; }
+    }
+    @media (max-width: 650px) {
+      .container { width: min(calc(100% - 28px), var(--container)); }
+      .section { padding: 48px 0; }
+      #audience, #learn, #syllabus { padding-block: 48px; }
+      .nav-shell { top: 10px; }
+      .nav { height: 62px; padding: 0 14px; border-radius: 18px; }
+      .brand { font-size: .88rem; }
+      .brand-mark { width: 32px; height: 32px; }
+      .hero { padding: 108px 0 38px; }
+      h1 { font-size: clamp(2.2rem,12vw,3.15rem); }
+      .hero-copy .lead { line-height: 1.9; }
+      .hero-actions { display: grid; grid-template-columns: 1fr; }
+      .hero-actions .btn { width: 100%; }
+      .trust-line { align-items: flex-start; }
+      .visual { min-height: 270px; }
+      .network { max-width: 390px; }
+      .audience-grid, .features-box { grid-template-columns: 1fr; }
+      .boundary-grid, .question-grid, .career-grid { grid-template-columns: 1fr; }
+      .transformation-grid { grid-template-columns: 1fr; }
+      .section-cta { align-items: stretch; flex-direction: column; }
+      .section-cta .btn { width: 100%; }
+      .corporate-card { padding: 20px; flex-direction: column; align-items: stretch; }
+      .corporate-card .btn { width: 100%; }
+      .audience-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .audience-card { min-height: 64px; padding: 10px 11px; gap: 8px; }
+      .timeline-item { min-height: 62px; padding: 10px; gap: 8px; }
+      .timeline-item h3 { font-size: .75rem; }
+      .syllabus-grid { grid-template-columns: repeat(2,1fr); }
+      .syllabus-card { min-height: 64px; padding-block: 11px; }
+      .stats { gap: 10px; }
+      .stat { padding: 22px 10px; }
+      .stat strong { font-size: 1.35rem; }
+      .price-stat { padding: 18px; flex-direction: column; align-items: flex-start; gap: 6px; }
+      .price-stat { grid-template-columns: 1fr; }
+      .price-meta { grid-column: auto; }
+      .refund-policy { padding: 20px; gap: 20px; }
+      .instructor { padding: 28px; grid-template-columns: 1fr; }
+      .privacy-card { padding: 26px 22px; grid-template-columns: 1fr; gap: 18px; }
+      .privacy-icon { width: 58px; height: 58px; }
+      .privacy-icon svg { width: 28px; }
+      .portrait { width: 135px; border-radius: 24px; }
+      .portrait::before { width: 105px; height: 105px; top: 31px; }
+      .portrait svg { width: 76px; }
+      .instructor h3 { font-size: 1.7rem; }
+      .final-cta { padding: 30px 18px; }
+      .apply-grid { grid-template-columns: 1fr; gap: 24px; }
+      .apply-form { padding: 18px; }
+      .form-submit-long { display: none; }
+      .form-submit-short { display: inline; }
+      .otp-wrap { grid-template-columns: 142px minmax(0,1fr); }
+      .upload-box { min-height: 78px; }
+      .footer-bottom { align-items: flex-start; flex-direction: column; gap: 8px; }
+      body { padding-bottom: 72px; }
+      .sticky-mobile-cta { position: fixed; z-index: 70; right: 10px; bottom: 10px; left: 10px; min-height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--primary-main); color: #07131d; box-shadow: var(--elevation-8); font-size: .82rem; font-weight: 800; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal, .stagger > * { opacity: 1; transform: none; }
+    }
+    @media (max-width: 420px) {
+      .brand > span:last-child { display: none; }
+      .nav { padding-inline: 10px; }
+      .nav .btn-small { padding-inline: 12px; font-size: .72rem; }
+      .audience-grid, .timeline, .syllabus-grid, .stats { grid-template-columns: 1fr; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .admission-grid { grid-template-columns: 1fr; }
+      .community-benefits { grid-template-columns: 1fr; }
+      .audience-card, .timeline-item, .syllabus-card { min-height: 58px; }
+      .outcome-card { min-height: 72px; flex-direction: row; align-items: center; }
+      .price-stat { grid-column: auto; }
+      .visual { min-height: 220px; }
+      .phone-prefix { width: 42px; font-size: .75rem; }
+      .phone-wrap input { padding-left: 48px; padding-right: 10px; font-size: .78rem; }
+      .otp-wrap { grid-template-columns: 1fr; }
+      .otp-send { width: 100%; padding-inline: 8px; font-size: .65rem; }
+      .otp-wrap input { grid-row: 2; }
+      .corporate-copy { align-items: flex-start; }
+      .corporate-card { padding: 16px; }
+      .corporate-card .btn { min-height: 44px; padding-inline: 12px; font-size: .72rem; white-space: nowrap; }
+      .course-price { width: 100%; flex-wrap: wrap; }
+      .upload-box { padding: 12px; gap: 10px; }
+      .upload-icon { width: 34px; height: 34px; flex-basis: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <header class="nav-shell" id="navShell">
+    <nav class="nav container" aria-label="ناوبری اصلی">
+      <a class="brand" href="#top" aria-label="صفحه اصلی">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 17V9m7 8V5m7 12v-5" stroke="white" stroke-width="2.3" stroke-linecap="round"/></svg></span>
+        <span>FinBuilders</span>
+      </a>
+      <div class="nav-links">
+        <a href="#learn">مسیر یادگیری</a><a href="#syllabus">سرفصل‌ها</a><a href="#instructor">مدرس</a><a href="#faq">سوالات متداول</a>
+      </div>
+      <a class="btn btn-primary btn-small ripple-btn" href="#apply">رزرو ظرفیت</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal visible">
+          <p class="eyebrow">FinBuilders Academy · Bootcamp 01</p>
+          <h1>بانکداری را از داخل صنعت یاد بگیرید؛<br><span class="gradient-text">بدون سال‌ها آزمون و خطا</span></h1>
+          <p class="lead">اکثر مدیران محصول، بانکداری را با تجربه‌کردن اشتباه‌های واقعی یاد می‌گیرند. این بوت‌کمپ همان تجربه را در یک مسیر زنده، فشرده و پروژه‌محور در اختیار شما قرار می‌دهد.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary ripple-btn" href="#apply">رزرو ظرفیت <span aria-hidden="true">←</span></a>
+            <a class="btn btn-ghost ripple-btn" href="#syllabus">مشاهده سرفصل‌ها</a>
+          </div>
+          <p class="hero-review-note">ثبت‌نام نهایی تنها پس از بررسی درخواست انجام می‌شود.</p>
+          <div class="hero-facts"><span class="hero-fact">ظرفیت فقط ۱۵ نفر</span><span class="hero-fact">۸ جلسه زنده و تعاملی</span><span class="hero-fact">Case Study واقعی صنعت</span></div>
+          <p class="cohort-date"><strong>شروع Cohort بعدی:</strong> پس از تکمیل ظرفیت اعلام می‌شود · <span id="readTime">مطالعه ۷ دقیقه‌ای</span></p>
+          <div class="trust-line"><strong>این یک دوره ویدیویی نیست؛ در یک Cohort محدود، روی مسئله‌های واقعی محصول کار می‌کنید.</strong></div>
+        </div>
+        <div class="visual reveal" aria-label="محیط واقعی مدیریت محصول فین‌تک">
+          <svg class="network" viewBox="0 0 520 500" role="img" aria-labelledby="networkTitle networkDesc">
+            <title id="networkTitle">مرکز عملیات یک محصول مالی</title><desc id="networkDesc">داشبورد مانیتورینگ تراکنش، دفتر عملیات، زیرساخت API و کنترل‌های امنیتی</desc>
+            <defs>
+              <linearGradient id="desk" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#171b25"/><stop offset=".55" stop-color="#0e1118"/><stop offset="1" stop-color="#08090d"/></linearGradient>
+              <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101c38"/><stop offset=".6" stop-color="#0b1120"/><stop offset="1" stop-color="#080b12"/></linearGradient>
+              <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#535b69"/><stop offset=".18" stop-color="#252b35"/><stop offset=".8" stop-color="#101319"/><stop offset="1" stop-color="#3b4350"/></linearGradient>
+              <linearGradient id="card" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2563eb"/><stop offset=".55" stop-color="#172554"/><stop offset="1" stop-color="#0f172a"/></linearGradient>
+              <linearGradient id="terminal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#303744"/><stop offset=".45" stop-color="#151922"/><stop offset="1" stop-color="#090b10"/></linearGradient>
+              <radialGradient id="ambient"><stop stop-color="#2563eb" stop-opacity=".28"/><stop offset="1" stop-color="#2563eb" stop-opacity="0"/></radialGradient>
+              <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="13"/></filter>
+              <filter id="smallGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <clipPath id="screenClip"><rect x="132" y="105" width="273" height="170" rx="10"/></clipPath>
+            </defs>
+            <!-- Ambient studio lighting and desk plane -->
+            <ellipse cx="275" cy="235" rx="250" ry="225" fill="url(#ambient)"/>
+            <ellipse cx="260" cy="424" rx="226" ry="45" fill="#000" opacity=".48" filter="url(#softShadow)"/>
+            <path d="M30 350L220 254 493 344 294 476z" fill="url(#desk)" stroke="#fff" stroke-opacity=".055"/>
+            <path d="M31 350l263 126 199-132" fill="none" stroke="#38bdf8" stroke-opacity=".07"/>
+
+            <!-- Laptop: realistic dark aluminum body -->
+            <ellipse cx="271" cy="337" rx="178" ry="25" fill="#000" opacity=".52" filter="url(#softShadow)"/>
+            <path d="M119 92q0-18 18-18h263q18 0 18 18v194H119z" fill="url(#metal)" stroke="#8b9bb4" stroke-opacity=".28"/>
+            <rect x="128" y="98" width="281" height="186" rx="13" fill="#05070b"/>
+            <rect x="132" y="105" width="273" height="170" rx="10" fill="url(#screen)"/>
+            <g clip-path="url(#screenClip)">
+              <circle cx="168" cy="137" r="4" fill="#10b981"/><rect x="179" y="133" width="47" height="8" rx="4" fill="#fff" opacity=".16"/>
+              <rect x="151" y="158" width="75" height="43" rx="8" fill="#fff" opacity=".045" stroke="#fff" stroke-opacity=".08"/>
+              <rect x="236" y="158" width="75" height="43" rx="8" fill="#fff" opacity=".045" stroke="#fff" stroke-opacity=".08"/>
+              <rect x="321" y="158" width="65" height="43" rx="8" fill="#fff" opacity=".045" stroke="#fff" stroke-opacity=".08"/>
+              <path d="M163 189l12-12 11 5 19-18" fill="none" stroke="#38bdf8" stroke-width="2"/>
+              <path d="M248 184h13v-12h13v17h13v-24h12" fill="none" stroke="#60a5fa" stroke-width="2"/>
+              <circle cx="352" cy="179" r="13" fill="none" stroke="#10b981" stroke-width="4" stroke-dasharray="58 24" transform="rotate(-90 352 179)"/>
+              <rect x="151" y="213" width="235" height="42" rx="8" fill="#fff" opacity=".035"/>
+              <path d="M161 245c18-14 29-4 44-15s28 7 45-3 27-3 43-14 25 11 43 3 29 2 40-8" fill="none" stroke="#2563eb" stroke-width="2.3"/>
+              <path d="M161 247h215" stroke="#fff" stroke-opacity=".06"/>
+            </g>
+            <circle cx="268" cy="86" r="2" fill="#1f2937"/>
+            <path d="M103 286h331l42 37q5 8-8 10H74q-13-2-7-10z" fill="url(#metal)" stroke="#9ca3af" stroke-opacity=".18"/>
+            <path d="M175 294h188l19 21H154z" fill="#0b0e14" stroke="#fff" stroke-opacity=".08"/>
+            <path d="M78 326h385" stroke="#93c5fd" stroke-opacity=".18"/>
+
+            <!-- Operations ledger: restrained, enterprise-oriented transaction table -->
+            <ellipse cx="154" cy="410" rx="100" ry="24" fill="#000" opacity=".46" filter="url(#softShadow)"/>
+            <g transform="rotate(-5 153 370)">
+              <rect x="58" y="315" width="191" height="116" rx="9" fill="#151922" stroke="#94a3b8" stroke-opacity=".24"/>
+              <rect x="58" y="315" width="191" height="27" rx="9" fill="#1e2633"/><path d="M58 342h191" stroke="#fff" stroke-opacity=".08"/>
+              <circle cx="75" cy="329" r="3" fill="#66bb6a"/><rect x="85" y="325" width="59" height="7" rx="2" fill="#fff" opacity=".18"/>
+              <g fill="#fff" opacity=".12"><rect x="73" y="354" width="48" height="5" rx="2"/><rect x="73" y="373" width="63" height="5" rx="2"/><rect x="73" y="392" width="41" height="5" rx="2"/><rect x="73" y="411" width="56" height="5" rx="2"/></g>
+              <g fill="#fff" opacity=".08"><rect x="146" y="354" width="38" height="5" rx="2"/><rect x="146" y="373" width="38" height="5" rx="2"/><rect x="146" y="392" width="38" height="5" rx="2"/><rect x="146" y="411" width="38" height="5" rx="2"/></g>
+              <g><rect x="200" y="351" width="31" height="10" rx="3" fill="#66bb6a" opacity=".14"/><rect x="200" y="370" width="31" height="10" rx="3" fill="#90caf9" opacity=".14"/><rect x="200" y="389" width="31" height="10" rx="3" fill="#66bb6a" opacity=".14"/><rect x="200" y="408" width="31" height="10" rx="3" fill="#fff" opacity=".07"/></g>
+            </g>
+
+            <!-- Secure API infrastructure: service nodes and audit controls -->
+            <ellipse cx="408" cy="414" rx="75" ry="23" fill="#000" opacity=".48" filter="url(#softShadow)"/>
+            <g>
+              <rect x="345" y="304" width="128" height="128" rx="9" fill="#12161e" stroke="#94a3b8" stroke-opacity=".25"/>
+              <rect x="357" y="318" width="104" height="28" rx="5" fill="#1c222d" stroke="#fff" stroke-opacity=".07"/><circle cx="372" cy="332" r="3" fill="#66bb6a"/><path d="M383 328h44m-44 8h27" stroke="#fff" stroke-opacity=".16" stroke-width="3" stroke-linecap="round"/>
+              <rect x="357" y="354" width="104" height="28" rx="5" fill="#1c222d" stroke="#fff" stroke-opacity=".07"/><circle cx="372" cy="368" r="3" fill="#90caf9"/><path d="M383 364h51m-51 8h34" stroke="#fff" stroke-opacity=".16" stroke-width="3" stroke-linecap="round"/>
+              <rect x="357" y="390" width="104" height="28" rx="5" fill="#1c222d" stroke="#fff" stroke-opacity=".07"/><circle cx="372" cy="404" r="3" fill="#66bb6a"/><path d="M383 400h38m-38 8h47" stroke="#fff" stroke-opacity=".16" stroke-width="3" stroke-linecap="round"/>
+              <path d="M441 323v-8a9 9 0 00-18 0v8" fill="none" stroke="#90caf9" stroke-width="1.5" opacity=".6"/>
+            </g>
+
+            <!-- Controlled API data connections -->
+            <g fill="none" stroke-linecap="round">
+              <path class="flow" d="M159 310C171 279 187 267 210 257" stroke="#90caf9" stroke-width="1.3" opacity=".48" stroke-dasharray="4 9"/>
+              <path class="flow" d="M396 302C368 275 346 266 322 257" stroke="#90caf9" stroke-width="1.3" opacity=".48" stroke-dasharray="4 9"/>
+            </g>
+            <g filter="url(#smallGlow)"><circle cx="183" cy="276" r="2.5" fill="#90caf9"/><circle cx="354" cy="273" r="2.5" fill="#90caf9"/><circle cx="286" cy="225" r="2.5" fill="#66bb6a"/></g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="origin-title">
+      <div class="container"><article class="card origin-card reveal"><h2 id="origin-title">چرا این بوت‌کمپ ایجاد شد؟</h2><div class="origin-copy"><p>بعد از سال‌ها همکاری با مدیران محصول، بانک‌ها، شرکت‌های پرداخت و تیم‌های فنی، مشخص شد بسیاری از افرادی که وارد فین‌تک می‌شوند، با وجود دانش خوب محصول، درک عمیقی از بانکداری، پرداخت، عملیات، رگولاتوری و معماری سیستم‌های مالی ندارند.</p><p>نتیجه این شکاف، تصمیم‌های اشتباه، ارتباط ضعیف با تیم‌های فنی و طولانی‌شدن مسیر رشد حرفه‌ای است.</p><p>این بوت‌کمپ برای پرکردن همین فاصله طراحی شده است؛ برنامه‌ای مبتنی بر تجربه واقعی صنعت، نه صرفاً آموزش تئوری.</p></div></article></div>
+    </section>
+
+    <section class="section" id="audience" aria-labelledby="audience-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">مخاطبان بوت‌کمپ</p><h2 id="audience-title">این بوت‌کمپ برای چه کسانی مناسب است؟</h2><p>برای افرادی که می‌خواهند وارد صنعت بانکداری و پرداخت شوند یا دانش تخصصی خود را در این حوزه توسعه دهند.</p></div>
+        <div class="grid audience-grid stagger" id="audienceGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="learn" aria-labelledby="learn-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">مسیر یادگیری</p><h2 id="learn-title">در این بوت‌کمپ چه یاد می‌گیرید؟</h2><p>از شناخت ساختار صنعت و چرخه تراکنش تا معماری، عملیات، داده و تصمیم‌گیری محصول پیش می‌رویم.</p></div>
+        <div class="timeline-wrap"><div class="timeline stagger" id="timeline"></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="syllabus" aria-labelledby="syllabus-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">۱۴ فصل تخصصی</p><h2 id="syllabus-title">سرفصل‌های بوت‌کمپ</h2><p>دانش و ابزارهایی که یک مدیر محصول برای طراحی محصولات قابل اجرا در صنعت مالی ایران نیاز دارد.</p></div>
+        <div class="grid syllabus-grid stagger" id="syllabusGrid"></div>
+        <button class="btn btn-ghost syllabus-toggle" id="syllabusToggle" type="button" aria-expanded="false">نمایش همه سرفصل‌ها</button>
+        <div class="section-cta reveal"><p>اگر این همان دانشی است که برای مسیر حرفه‌ای خود نیاز دارید، درخواستتان را ثبت کنید.</p><a class="btn btn-primary ripple-btn" href="#apply">ثبت درخواست حضور</a></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="outcome-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">نتیجه ملموس</p><h2 id="outcome-title">پس از پایان دوره چه خواهید آموخت؟</h2><p>در پایان، می‌توانید صنعت و تراکنش‌ها را تحلیل کنید و یک محصول مالی را از نیازمندی تا متریک طراحی کنید.</p></div>
+        <div class="transformation-grid stagger">
+          <article class="card transformation-card before"><span class="transformation-label">قبل از بوت‌کمپ</span><ul class="transformation-list"><li>شناخت پراکنده از بانکداری و پرداخت</li><li>ابهام در چرخه کامل تراکنش و تسویه</li><li>دشواری تعامل با تیم‌های فنی و عملیات</li><li>آمادگی محدود برای مصاحبه‌های تخصصی</li></ul></article>
+          <article class="card transformation-card after"><span class="transformation-label">بعد از بوت‌کمپ</span><ul class="transformation-list"><li>تحلیل ساختار صنعت و بازیگران اصلی</li><li>طراحی سرویس مالی و بررسی API بانکی</li><li>نوشتن PRD، Roadmap و متریک محصول</li><li>آمادگی برای نقش‌های محصول در فین‌تک</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="details-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">ساختار Cohort</p><h2 id="details-title">مشخصات بوت‌کمپ</h2><p>هر جلسه ۲ ساعت آموزش زنده دارد و پروژه‌ها و تمرین‌های عملی حدود ۸ تا ۱۲ ساعت زمان نیاز دارند.</p></div>
+        <div class="grid stats stagger"><div class="card stat"><span>مدت بوت‌کمپ</span><strong>۴ هفته</strong></div><div class="card stat"><span>تعداد جلسات</span><strong>۸ جلسه</strong></div><div class="card stat"><span>آموزش زنده</span><strong>۱۶ ساعت</strong></div><div class="card stat"><span>حداکثر ظرفیت</span><strong>۱۵ نفر</strong></div><div class="card stat price-stat"><div><span class="price-label">سرمایه‌گذاری برای شرکت در بوت‌کمپ</span><strong>۲۰٬۰۰۰٬۰۰۰ تومان</strong></div><div class="price-meta"><span>ظرفیت فقط ۱۵ نفر</span><span>ثبت‌نام پس از بررسی درخواست</span><span>ضمانت بازگشت وجه</span></div></div></div>
+        <article class="card refund-policy reveal"><p class="eyebrow">ضمانت بازگشت وجه</p><h3>بدون پیچیدگی و متناسب با جلسات برگزارشده</h3><p>اگر پس از شروع دوره احساس کردید این بوت‌کمپ مناسب شما نیست، هزینه جلسات برگزارشده محاسبه شده و باقی مبلغ بدون پیچیدگی به شما بازگردانده خواهد شد.</p></article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="features-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">تفاوت واقعی</p><h2 id="features-title">چرا این بوت‌کمپ متفاوت است؟</h2><p>کلاس‌ها به‌صورت Cohort برگزار می‌شوند تا امکان تعامل مستقیم، پرسش و بررسی تصمیم‌های واقعی محصول فراهم باشد.</p></div>
+        <div class="card features-box stagger" id="featuresGrid"></div>
+        <article class="card corporate-card reveal">
+          <div class="corporate-copy"><span class="corporate-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 20V7l8-4v17M4 10h8m-5 3h2m-2 3h2m5 4v-9l6 2v7m-3-4h1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Enterprise Cohort برای سازمان‌ها</h3><p>این بوت‌کمپ برای شرکت‌ها و سازمان‌ها به‌صورت اختصاصی نیز قابل برگزاری است.</p></div></div>
+          <a class="btn btn-ghost ripple-btn" href="#apply">درخواست سازمانی</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="boundary-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">چه چیزی یاد نخواهید گرفت؟</p><h2 id="boundary-title">این بوت‌کمپ برای چه کسانی مناسب نیست؟</h2><p>این بوت‌کمپ قرار نیست همه‌چیز را آموزش دهد؛ تمرکز آن عمداً محدود و تخصصی است.</p></div>
+        <div class="grid boundary-grid stagger">
+          <article class="card boundary-card"><span class="boundary-mark" aria-hidden="true">−</span><h3>آموزش برنامه‌نویسی نیست</h3><p>برای شرکت در دوره نیازی به کدنویسی ندارید و برنامه‌نویسی نیز تدریس نمی‌شود.</p></article>
+          <article class="card boundary-card"><span class="boundary-mark" aria-hidden="true">−</span><h3>دوره عمومی مدیریت محصول نیست</h3><p>مفاهیم عمومی فقط در جایی بررسی می‌شوند که برای محصول مالی کاربرد مستقیم داشته باشند.</p></article>
+          <article class="card boundary-card"><span class="boundary-mark" aria-hidden="true">✓</span><h3>تمرکز بر تجربه عملی صنعت ایران است</h3><p>موضوع اصلی، مدیریت محصول در بانکداری، پرداخت و فین‌تک ایران است.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="privacy-title">
+      <div class="container">
+        <article class="card privacy-card reveal">
+          <div class="privacy-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.8-2.8 8.3-7 10-4.2-1.7-7-5.2-7-10V6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 12l1.7 1.7 3.7-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="privacy-content">
+            <p class="eyebrow">حریم خصوصی و امنیت</p>
+            <h2 id="privacy-title">حضور اختصاصی برای مدیران ارشد</h2>
+            <p class="privacy-lead">یادگیری نباید تحت تأثیر جایگاه سازمانی افراد قرار بگیرد.</p>
+            <p>مدیران ارشد، اعضای هیئت‌مدیره، معاونان بانک‌ها و مدیران عامل می‌توانند در صورت درخواست، کاملاً محرمانه در بوت‌کمپ حضور داشته باشند. سایر شرکت‌کنندگان از هویت این افراد مطلع نخواهند شد.</p>
+            <p>با نام نمایشی و پروفایل غیرفعال، محیطی امن و بدون قضاوت برای سؤال‌پرسیدن و مشارکت تخصصی فراهم می‌شود.</p><p class="privacy-assurance">سایر شرکت‌کنندگان از هویت شما مطلع نخواهند شد.</p>
+            <div class="privacy-options" aria-label="امکانات حضور محرمانه"><span class="privacy-option">VIP</span><span class="privacy-option">نام نمایشی</span><span class="privacy-option">پروفایل بدون تصویر</span><span class="privacy-option">هویت محرمانه</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="instructor" aria-labelledby="instructor-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">تجربه دست اول</p><h2 id="instructor-title">مدرس بوت‌کمپ</h2></div>
+        <article class="card instructor reveal">
+          <div class="portrait" aria-hidden="true"><svg viewBox="0 0 100 120" fill="none"><circle cx="50" cy="36" r="22" fill="#dbeafe"/><path d="M17 119c2-34 14-51 33-51s31 17 33 51" fill="#dbeafe"/><path d="M37 70l13 17 13-17" stroke="#2563eb" stroke-width="3"/></svg></div>
+          <div><h3>Amir Eslami</h3><p class="role">Business Line Owner · Corporate Services</p><div class="instructor-proof"><strong>+۸ سال</strong><span>تجربه مستقیم در صنعت بانکداری و پرداخت</span></div><p class="bio">این بوت‌کمپ را ساختم تا تجربه‌ای را منتقل کنم که معمولاً فقط با سال‌ها حضور در پروژه‌های بانکی، PSP، پرداخت‌یاری و سازمان‌های Enterprise به دست می‌آید؛ تجربه تصمیم‌گیری محصول، تعامل با تیم‌های فنی و مواجهه با محدودیت‌های واقعی صنعت.</p><div class="badges"><span class="badge">Corporate Banking</span><span class="badge">Settlement</span><span class="badge">Payment Gateway</span><span class="badge">API Banking</span><span class="badge">Reconciliation</span><span class="badge">Direct Debit</span></div></div>
+        </article>
+        <p class="eyebrow reveal" style="margin-top:20px">دامنه تجربه حرفه‌ای مدرس</p>
+        <div class="grid proof-grid stagger"><div class="card proof-item"><strong>محصولات سازمانی</strong><span>طراحی راهکارهای واقعی برای مشتریان بزرگ</span></div><div class="card proof-item"><strong>بانک‌ها و PSPها</strong><span>تجربه همکاری مستقیم با بازیگران صنعت</span></div><div class="card proof-item"><strong>تیم محصول و فناوری</strong><span>تجربه مدیریت و هم‌راستاسازی تیم‌های تخصصی</span></div><div class="card proof-item"><strong>زیرساخت مالی</strong><span>API Banking، Settlement و Reconciliation</span></div></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="questions-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">درک کاربردی صنعت</p><h2 id="questions-title">سؤالاتی که بعد از این بوت‌کمپ می‌توانید پاسخ دهید</h2><p>پرسش‌هایی که در کار روزمره یک مدیر محصول مالی، دائماً با آن‌ها روبه‌رو می‌شوید.</p></div>
+        <div class="grid question-grid stagger" id="questionGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="career-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">مسیر حرفه‌ای</p><h2 id="career-title">بعد از پایان بوت‌کمپ چه فرصت‌هایی خواهید داشت؟</h2><p>این Professional Program برای ورود، تغییر مسیر یا رشد در نقش‌های محصول و تحلیل صنعت مالی طراحی شده است.</p></div>
+        <div class="grid career-grid stagger" id="careerGrid"></div>
+        <div class="domain-list reveal" aria-label="حوزه‌های فعالیت"><span class="domain-chip">بانک</span><span class="domain-chip">PSP</span><span class="domain-chip">پرداخت‌یار</span><span class="domain-chip">Open Banking</span><span class="domain-chip">Lending</span><span class="domain-chip">WealthTech</span><span class="domain-chip">Corporate Banking</span><span class="domain-chip">شرکت‌های فین‌تک</span></div>
+        <div class="section-cta reveal"><p>ظرفیت هر Cohort فقط ۱۵ نفر است تا تعامل مستقیم و بازخورد واقعی حفظ شود.</p><a class="btn btn-primary ripple-btn" href="#apply">ثبت درخواست حضور</a></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="future-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">مسیر ادامه‌دار</p><h2 id="future-title">یادگیری با پایان کلاس متوقف نمی‌شود</h2><p>مسیر حرفه‌ای از بوت‌کمپ آغاز می‌شود و با همراهی و ارتباط با جامعه متخصصان ادامه پیدا می‌کند.</p></div>
+        <div class="future-path stagger"><article class="card future-step"><strong>Bootcamp</strong><p>یادگیری فشرده، Case Study و پروژه عملی در یک Cohort محدود.</p></article><article class="card future-step"><strong>Mentorship</strong><p>بازخورد روی پروژه و راهنمایی برای تصمیم‌های حرفه‌ای و مسیر شغلی.</p></article><article class="card future-step"><strong>Community</strong><p>ارتباط با جامعه فارغ‌التحصیلان و متخصصان محصول در صنعت مالی.</p></article></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="community-title">
+      <div class="container"><article class="card community-card reveal"><div><p class="eyebrow">FinBuilders Community</p><h2 id="community-title">ارتباط حرفه‌ای بعد از بوت‌کمپ ادامه دارد</h2><p>جامعه فارغ‌التحصیلان فضایی برای ادامه یادگیری، تبادل تجربه و ساختن ارتباط‌های حرفه‌ای در صنعت مالی است.</p></div><div class="community-benefits"><div class="community-benefit">ارتباط با فارغ‌التحصیلان</div><div class="community-benefit">فرصت‌های شغلی</div><div class="community-benefit">جلسات تخصصی</div><div class="community-benefit">به‌روزرسانی‌های محتوایی</div><div class="community-benefit">شبکه‌سازی حرفه‌ای</div></div></article></div>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-head reveal"><p class="eyebrow">پیش از ثبت‌نام</p><h2 id="faq-title">سوالات متداول</h2></div>
+        <div class="faq reveal" id="faqList"></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="admission-title">
+      <div class="container"><div class="section-head reveal"><p class="eyebrow">فرآیند پذیرش</p><h2 id="admission-title">از درخواست تا شروع بوت‌کمپ</h2><p>برای حفظ کیفیت Cohort، پذیرش طی یک فرآیند کوتاه و شفاف انجام می‌شود.</p></div><div class="admission-grid stagger"><article class="card admission-step"><span>۱</span><h3>ثبت درخواست</h3></article><article class="card admission-step"><span>۲</span><h3>بررسی رزومه</h3></article><article class="card admission-step"><span>۳</span><h3>تماس کوتاه</h3></article><article class="card admission-step"><span>۴</span><h3>تأیید نهایی</h3></article><article class="card admission-step"><span>۵</span><h3>شروع بوت‌کمپ</h3></article></div></div>
+    </section>
+
+    <section class="section" id="apply" aria-labelledby="apply-title">
+      <div class="container">
+        <div class="card final-cta reveal">
+          <div class="apply-grid">
+            <div class="apply-copy">
+              <p class="eyebrow">گام بعدی</p>
+              <h2 id="apply-title">ظرفیت Cohort محدود به ۱۵ نفر است.</h2>
+              <p><strong style="color:var(--text)">این بوت‌کمپ برای همه مناسب نیست.</strong> درخواست‌ها بررسی می‌شوند و در صورت تناسب، ثبت‌نام نهایی انجام خواهد شد.</p>
+              <div class="course-price"><span>هزینه شرکت:</span><strong>۲۰ میلیون تومان</strong></div>
+              <div class="contact-note"><span aria-hidden="true">✓</span><strong>پس از ثبت درخواست، برای هماهنگی با شما تماس گرفته می‌شود.</strong></div>
+            </div>
+            <form class="apply-form" id="applyForm" novalidate>
+              <div class="form-grid">
+                <div class="field"><label for="firstName">نام</label><input id="firstName" name="firstName" type="text" autocomplete="given-name" placeholder="مثلاً امیر" minlength="2" required></div>
+                <div class="field"><label for="lastName">نام خانوادگی</label><input id="lastName" name="lastName" type="text" autocomplete="family-name" placeholder="مثلاً اسلامی" minlength="2" required></div>
+                <div class="field full"><label for="phone">شماره موبایل</label><div class="phone-wrap"><span class="phone-prefix" aria-hidden="true">+98</span><input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="9123456789" minlength="10" maxlength="10" pattern="9[0-9]{9}" aria-label="شماره موبایل بدون صفر ابتدایی" aria-describedby="phoneHint" required></div><small id="phoneHint" style="color:#71717a;font-size:.68rem">شماره موبایل باید با ۹ شروع شود.</small></div>
+                <div class="field full"><label for="otp">کد تأیید شماره موبایل</label><div class="otp-wrap"><button class="otp-send" id="sendOtp" type="button">ارسال کد به موبایل</button><input id="otp" name="otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="4" pattern="[0-9]{4}" placeholder="کد ۴ رقمی" aria-describedby="otpHint" required></div><small id="otpHint" style="color:#71717a;font-size:.68rem">کد تأیید به شماره <bdi id="otpPhonePreview" dir="ltr">+98…</bdi> ارسال می‌شود.</small></div>
+                <div class="field full"><label for="resume">رزومه <span style="color:#71717a">(اختیاری)</span></label><input class="upload-input" id="resume" name="resume" type="file" accept=".pdf,application/pdf"><label class="upload-box" for="resume"><span class="upload-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 15v3a2 2 0 002 2h10a2 2 0 002-2v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="upload-copy"><strong id="resumeName">برای انتخاب فایل کلیک کنید</strong><small>فقط PDF تا حداکثر ۵۰ مگابایت</small></span></label><span class="field-error" id="resumeError" aria-live="polite"></span></div>
+              </div>
+              <button class="btn btn-primary form-submit ripple-btn" type="submit"><span class="form-submit-long">درخواست بررسی برای حضور در بوت‌کمپ</span><span class="form-submit-short">ارسال درخواست بررسی</span><span aria-hidden="true">←</span></button>
+              <p class="form-privacy">اطلاعات شما فقط برای هماهنگی دوره استفاده می‌شود.</p>
+            </form>
+            <div class="form-success" id="formSuccess" role="status" aria-live="polite">
+              <span class="success-icon" aria-hidden="true">✓</span>
+              <h3>درخواست شما ثبت شد</h3>
+              <p>ممنون از همراهی شما؛ پس از بررسی درخواست، برای هماهنگی مرحله بعد با شما تماس می‌گیریم.</p>
+              <div class="next-steps"><div class="next-step"><span>۱</span>بررسی اطلاعات درخواست</div><div class="next-step"><span>۲</span>تماس برای هماهنگی و پاسخ به پرسش‌ها</div><div class="next-step"><span>۳</span>رزرو نهایی ظرفیت Cohort</div></div>
+            </div>
+          </div>
+        </div>
+        <footer class="footer-bottom"><span>© ۱۴۰۵ FinBuilders Academy · Bootcamp 01</span><span>برای کار واقعی؛ نه فقط یادگیری تئوری</span></footer>
+      </div>
+    </section>
+  </main>
+  <a class="sticky-mobile-cta ripple-btn" href="#apply">رزرو ظرفیت Cohort بعدی</a>
+
+  <script>
+    /* Content kept in data arrays to keep markup lean and maintainable. */
+    const audience = ['مدیر محصول','دستیار مدیر محصول','مدیر محصول فنی','تحلیل‌گر کسب‌وکار','متخصص بانکداری و پرداخت','بنیان‌گذار فین‌تک'];
+    const timeline = ['اکوسیستم بانکداری و فین‌تک ایران','مفاهیم پایه بانکداری','سیستم‌های پرداخت','انتقال وجه','بانکداری شرکتی','APIهای بانکی','معماری سیستم‌های پرداخت','عملیات بانکی','امنیت محصولات مالی','داده و تحلیل','اقتصاد محصول','مدیریت محصول','پروژه‌های واقعی','آمادگی برای بازار کار'];
+    const syllabus = ['اکوسیستم بانکداری و فین‌تک ایران','مفاهیم پایه بانکداری','سیستم‌های پرداخت','انتقال وجه','بانکداری شرکتی','APIهای بانکی','معماری سیستم‌های پرداخت','عملیات بانکی','امنیت','داده و تحلیل','اقتصاد محصول','مدیریت محصول','پروژه‌های واقعی','آمادگی برای بازار کار'];
+    const features = ['آموزش بر اساس تجربه واقعی صنعت، نه صرفاً تئوری','بررسی تصمیم‌های واقعی در محصولات بانکی و پرداخت','Case Study از پروژه‌های واقعی','مناسب برای ورود یا ارتقای شغلی در فین‌تک','ظرفیت محدود برای تعامل مستقیم با مدرس'];
+    const keyQuestions = ['شاپرک دقیقاً چه کاری انجام می‌دهد؟','تفاوت شتاب و شاپرک چیست؟','Settlement چگونه انجام می‌شود؟','چرا Reconciliation اهمیت دارد؟','API بانکی چگونه طراحی می‌شود؟','چرا Idempotency در پرداخت حیاتی است؟','چگونه برای یک محصول بانکی PRD بنویسیم؟'];
+    const careers = ['مدیر محصول در شرکت‌های فین‌تک','دستیار مدیر محصول','تحلیل‌گر کسب‌وکار','مدیر محصول فنی','مالک محصول','متخصص محصول در بانک‌ها','مدیر محصول در PSPها','مدیر محصول در پرداخت‌یارها','مدیر محصول در نئوبانک‌ها'];
+    const faNum = n => new Intl.NumberFormat('fa-IR',{useGrouping:false}).format(n);
+
+    document.querySelector('#audienceGrid').innerHTML = audience.map((x,i) => `<article class="card audience-card"><span class="card-index">${faNum(i+1).padStart(2,'۰')}</span><h3>${x}</h3></article>`).join('');
+    document.querySelector('#timeline').innerHTML = timeline.map((x,i) => `<article class="timeline-item"><span class="timeline-dot">${faNum(i+1)}</span><h3>${x}</h3></article>`).join('');
+    document.querySelector('#syllabusGrid').innerHTML = syllabus.map((x,i) => `<article class="card syllabus-card${i >= 8 ? ' is-hidden' : ''}"><h3>${x}</h3></article>`).join('');
+    document.querySelector('#featuresGrid').innerHTML = features.map(x => `<div class="check"><span class="checkmark" aria-hidden="true">✓</span><span>${x}</span></div>`).join('');
+    document.querySelector('#questionGrid').innerHTML = keyQuestions.map((x,i) => `<article class="card question-card"><span>${faNum(i+1)}</span><h3>${x}</h3></article>`).join('');
+    document.querySelector('#careerGrid').innerHTML = careers.map(x => `<article class="card career-card"><h3>${x}</h3></article>`).join('');
+    document.querySelector('#syllabusToggle').addEventListener('click', event => {
+      const expanded = event.currentTarget.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('#syllabusGrid .syllabus-card').forEach((card, index) => card.classList.toggle('is-hidden', expanded && index >= 8));
+      event.currentTarget.setAttribute('aria-expanded', String(!expanded));
+      event.currentTarget.textContent = expanded ? 'نمایش همه سرفصل‌ها' : 'نمایش کمتر';
+    });
+
+    const faqs = [
+      ['آیا برای شرکت در این دوره باید برنامه‌نویس باشم؟','خیر. آشنایی اولیه با فناوری مفید است، اما دوره با تمرکز بر مدیریت محصول طراحی شده و نیاز به تجربه برنامه‌نویسی ندارد.'],
+      ['آیا دوره فقط درباره بانکداری است؟','خیر. این دوره ترکیبی از بانکداری، پرداخت، فین‌تک، مدیریت محصول، عملیات، داده و معماری سیستم‌های مالی است.'],
+      ['آیا پروژه عملی وجود دارد؟','بله. بخش مهمی از دوره بر تحلیل و طراحی محصولات واقعی صنعت بانکداری و پرداخت متمرکز است.'],
+      ['آیا این دوره برای افراد با سابقه کاری مناسب است؟','بله. محتوا به‌گونه‌ای طراحی شده که هم برای افراد تازه‌وارد و هم برای مدیران محصول، تحلیلگران کسب‌وکار و متخصصان فناوری قابل استفاده باشد.'],
+      ['ساختار و مدت بوت‌کمپ چگونه است؟','بوت‌کمپ طی ۴ هفته و در ۸ جلسه دو ساعته برگزار می‌شود؛ در مجموع ۱۶ ساعت آموزش زنده و حدود ۸ تا ۱۲ ساعت پروژه و تمرین عملی خواهید داشت.'],
+      ['کلاس‌ها چگونه برگزار می‌شوند؟','دوره به‌صورت Cohort و با ظرفیت حداکثر ۱۵ نفر برگزار می‌شود تا امکان تعامل مستقیم، پرسش و بررسی پروژه‌ها وجود داشته باشد. اطلاعات زمان برگزاری Cohort بعدی پس از ثبت درخواست اعلام می‌شود.'],
+      ['آیا امکان حضور محرمانه وجود دارد؟','بله. در صورت درخواست، مدیران و متخصصان می‌توانند با نام نمایشی، تصویر غیرفعال و هویت محرمانه در دوره حضور داشته باشند.'],
+      ['آیا دوره برای شرکت‌ها به‌صورت اختصاصی برگزار می‌شود؟','بله. امکان برگزاری اختصاصی بوت‌کمپ برای شرکت‌ها و سازمان‌ها وجود دارد. برای هماهنگی، درخواست سازمانی ثبت کنید.'],
+      ['هزینه شرکت در بوت‌کمپ چقدر است؟','هزینه شرکت ۲۰ میلیون تومان است. ظرفیت محدود دوره برای حفظ کیفیت تعامل و بازخورد مستقیم در نظر گرفته شده است.'],
+      ['شرایط بازگشت وجه چگونه است؟','اگر پس از شروع بوت‌کمپ احساس کردید این برنامه مناسب شما نیست، هزینه جلسات برگزارشده محاسبه و باقی مبلغ بدون پیچیدگی بازپرداخت می‌شود.'],
+      ['آیا استخدام پس از بوت‌کمپ تضمین می‌شود؟','خیر. هیچ استخدامی تضمین نمی‌شود؛ هدف این Professional Program افزایش آمادگی تخصصی، کیفیت تصمیم‌گیری و شانس موفقیت شما در نقش‌ها و مصاحبه‌های صنعت است.'],
+      ['آیا بدون سابقه بانکی می‌توانم شرکت کنم؟','بله. محتوا از مفاهیم پایه صنعت آغاز می‌شود، اما تجربه مدیریت محصول، تحلیل کسب‌وکار یا فناوری به استفاده بهتر از بوت‌کمپ کمک می‌کند.'],
+      ['آیا بوت‌کمپ برای مدیران غیرمحصول هم مناسب است؟','بله؛ مدیران کسب‌وکار، فناوری و بانکی که با محصولات مالی درگیرند می‌توانند از محتوای تخصصی و Case Studyها استفاده کنند.'],
+      ['آیا ارتباط با مدرس بعد از بوت‌کمپ ادامه دارد؟','مسیر یادگیری با بازخورد پروژه و حضور در FinBuilders Community ادامه پیدا می‌کند و فرصت ارتباط حرفه‌ای و جلسات تخصصی فراهم خواهد بود.']
+    ];
+    document.querySelector('#faqList').innerHTML = faqs.map(([q,a],i) => `<article class="faq-item"><button class="faq-question" aria-expanded="false" aria-controls="faq-a-${i}"><span>${q}</span><span class="faq-plus" aria-hidden="true">+</span></button><div class="faq-answer" id="faq-a-${i}"><div><p>${a}</p></div></div></article>`).join('');
+    document.querySelectorAll('.faq-question').forEach(button => button.addEventListener('click', () => {
+      const item = button.closest('.faq-item'); const open = item.classList.toggle('open');
+      button.setAttribute('aria-expanded', String(open));
+    }));
+
+    /* OTP and resume UI; connect the send action and submission to the production API. */
+    const applyForm = document.querySelector('#applyForm');
+    const firstNameInput = document.querySelector('#firstName');
+    const lastNameInput = document.querySelector('#lastName');
+    const phoneInput = document.querySelector('#phone');
+    const otpButton = document.querySelector('#sendOtp');
+    const otpInput = document.querySelector('#otp');
+    const otpPhonePreview = document.querySelector('#otpPhonePreview');
+    const resumeInput = document.querySelector('#resume');
+    const resumeName = document.querySelector('#resumeName');
+    const resumeError = document.querySelector('#resumeError');
+    const toEnglishDigits = value => value
+      .replace(/[۰-۹]/g, digit => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
+      .replace(/[٠-٩]/g, digit => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)));
+
+    const validatePersianName = (input, fieldLabel) => {
+      const value = input.value.trim();
+      const isPersian = /^[\u0621-\u063A\u0641-\u064A\u067E\u0686\u0698\u06A9\u06AF\u06CC\u06C0\u200C\s]+$/.test(value);
+      input.setCustomValidity(isPersian && value.length >= 2 ? '' : `${fieldLabel} را فقط با حروف فارسی وارد کنید.`);
+      return !input.validationMessage;
+    };
+
+    [[firstNameInput, 'نام'], [lastNameInput, 'نام خانوادگی']].forEach(([input, label]) => {
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/[^\u0621-\u063A\u0641-\u064A\u067E\u0686\u0698\u06A9\u06AF\u06CC\u06C0\u200C\s]/g, '');
+        validatePersianName(input, label);
+      });
+    });
+
+    const validatePhone = () => {
+      const valid = /^9[0-9]{9}$/.test(phoneInput.value);
+      phoneInput.setCustomValidity(valid ? '' : 'شماره موبایل را به‌صورت ۱۰ رقم و بدون صفر ابتدایی وارد کنید.');
+      return valid;
+    };
+
+    phoneInput.addEventListener('input', () => {
+      phoneInput.value = toEnglishDigits(phoneInput.value).replace(/[^0-9]/g, '').slice(0, 10);
+      otpPhonePreview.textContent = `+98${phoneInput.value || '…'}`;
+      validatePhone();
+    });
+
+    phoneInput.addEventListener('beforeinput', event => {
+      const incomingDigit = event.data ? toEnglishDigits(event.data) : '';
+      if (!phoneInput.value && /^[0-9]$/.test(incomingDigit) && incomingDigit !== '9') {
+        event.preventDefault();
+        phoneInput.setCustomValidity('شماره موبایل باید با رقم ۹ شروع شود.');
+        phoneInput.reportValidity();
+      }
+    });
+
+    otpButton.addEventListener('click', () => {
+      if (!validatePhone()) {
+        phoneInput.reportValidity();
+        return;
+      }
+      const resendAt = Date.now() + 59000;
+      otpButton.disabled = true;
+      otpButton.textContent = `ارسال مجدد کد (${faNum(59)})`;
+      otpInput.focus();
+      const timer = setInterval(() => {
+        const remaining = Math.max(0, Math.ceil((resendAt - Date.now()) / 1000));
+        otpButton.textContent = remaining ? `ارسال مجدد کد (${faNum(remaining)})` : 'ارسال مجدد کد';
+        if (!remaining) { clearInterval(timer); otpButton.disabled = false; }
+      }, 250);
+    });
+
+    otpInput.addEventListener('input', () => {
+      otpInput.value = toEnglishDigits(otpInput.value).replace(/[^0-9]/g, '').slice(0, 4);
+      otpInput.setCustomValidity(/^[0-9]{4}$/.test(otpInput.value) ? '' : 'کد تأیید باید دقیقاً ۴ رقم باشد.');
+    });
+
+    resumeInput.addEventListener('change', () => {
+      const file = resumeInput.files[0];
+      resumeInput.setCustomValidity('');
+      resumeError.textContent = '';
+      if (!file) { resumeName.textContent = 'برای انتخاب فایل کلیک کنید'; return; }
+      const allowed = /\.pdf$/i.test(file.name) && (!file.type || file.type === 'application/pdf');
+      if (!allowed || file.size > 50 * 1024 * 1024) {
+        resumeInput.setCustomValidity('فایل رزومه باید PDF و حداکثر ۵۰ مگابایت باشد.');
+        resumeError.textContent = 'فرمت یا حجم فایل مجاز نیست.';
+        resumeName.textContent = 'انتخاب فایل دیگری';
+        return;
+      }
+      resumeName.textContent = file.name;
+    });
+
+    applyForm.addEventListener('submit', event => {
+      event.preventDefault();
+      validatePersianName(firstNameInput, 'نام');
+      validatePersianName(lastNameInput, 'نام خانوادگی');
+      validatePhone();
+      otpInput.setCustomValidity(/^[0-9]{4}$/.test(otpInput.value) ? '' : 'کد تأیید باید دقیقاً ۴ رقم باشد.');
+      if (!applyForm.checkValidity()) { applyForm.reportValidity(); return; }
+      applyForm.hidden = true;
+      document.querySelector('#formSuccess').classList.add('show');
+    });
+
+    /* Reveal sections once, close to the viewport. */
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
+    }), { threshold: .1, rootMargin: '0px 0px -45px' });
+    if (!reduceMotion) document.querySelectorAll('.reveal:not(.visible), .stagger').forEach(el => revealObserver.observe(el));
+    else document.querySelectorAll('.reveal, .stagger').forEach(el => el.classList.add('visible'));
+
+    /* Compact navigation after the hero begins to leave. */
+    const navShell = document.querySelector('#navShell');
+    const scrollProgress = document.querySelector('#scrollProgress');
+    const syncPageState = () => {
+      navShell.classList.toggle('scrolled', scrollY > 60);
+      const maxScroll = document.documentElement.scrollHeight - innerHeight;
+      scrollProgress.style.width = `${maxScroll > 0 ? Math.min(100, scrollY / maxScroll * 100) : 0}%`;
+    };
+    addEventListener('scroll', syncPageState, { passive: true });
+    addEventListener('resize', syncPageState, { passive: true });
+    syncPageState();
+
+    const estimatedMinutes = Math.max(1, Math.ceil(document.body.innerText.trim().split(/\s+/).length / 180));
+    document.querySelector('#readTime').textContent = `مطالعه ${faNum(estimatedMinutes)} دقیقه‌ای`;
+
+    /* Pointer-aware ripple interaction. */
+    document.querySelectorAll('.ripple-btn').forEach(button => button.addEventListener('pointerdown', event => {
+      const old = button.querySelector('.ripple'); if (old) old.remove();
+      const rect = button.getBoundingClientRect(); const size = Math.max(rect.width, rect.height);
+      const ripple = document.createElement('span'); ripple.className = 'ripple';
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.right = `${rect.right - event.clientX - size/2}px`; ripple.style.top = `${event.clientY - rect.top - size/2}px`;
+      button.appendChild(ripple); ripple.addEventListener('animationend', () => ripple.remove());
+    }));
+  </script>
+</body>
+</html>
